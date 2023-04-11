@@ -243,6 +243,7 @@ export default class Welcome extends Component {
               <Text
                 style={{
                   textAlign: 'center',
+                  color: theme.colors.gray
                 }}>
                 Signup
               </Text>
@@ -293,7 +294,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1.5,
-
+    marginTop:20,
     justifyContent: 'center',
     alignItems: 'center',
   },
