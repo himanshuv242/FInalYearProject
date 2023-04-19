@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {Component} from 'react';
+import React from 'react';
 import {Text, View, Image, Settings} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -17,57 +17,53 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 const Stack = createStackNavigator();
 
-export default class App extends Component {
-  render() {
-    // const {navigation} = this.props;
-    // console.log(navigation); 
-    // --> Ở ngoài App không có đối tượng navigation ?
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            height: theme.sizes.base * 3,
+            // backgroundColor: 'transparent',
+            borderBottomColor: '#fff',
+            shadowColor: '#000'
+          },
+          headerTitleAlign: 'left',
 
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              height: theme.sizes.base * 3,
-              backgroundColor: 'transparent',
-              borderBottomColor: '#fff',
-            },
-            headerTitleAlign: 'center',
-
-            headerTitle: null,
-            headerBackImage: () => (
-              <Image source={require('./src/assets/icons/back.png')} />
+          headerTitle: null,
+          headerBackImage: () => (
+            <Image source={require('./src/assets/icons/back.png')} />
+          ),
+          headerBackTitleVisible: false,
+          headerLeftContainerStyle: {
+            paddingLeft: theme.sizes.padding,
+          },
+        }}>
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Signup" component={Signup} />
+        {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
+        {/* <Stack.Screen name="Browse" component={Browse} /> */}
+        {/* <Stack.Screen name="Explore" component={Explore} /> */}
+        {/* <Stack.Screen name="Setting" component={Setting} /> */}
+        <Stack.Screen
+          name="Product"
+          component={Product}
+          options={{
+            headerRight: () => (
+              <Button style={{marginRight: 20, justifyContent: 'flex-end'}}>
+                <EntypoIcon
+                  name="dots-three-horizontal"
+                  size={16}
+                  color={theme.colors.gray2}
+                />
+              </Button>
             ),
-            headerBackTitleVisible: false,
-            headerLeftContainerStyle: {
-              paddingLeft: theme.sizes.padding,
-              paddingTop: theme.sizes.padding,
-            },
-          }}>
-          <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
-          {/* <Stack.Screen name="Browse" component={Browse} /> */}
-          {/* <Stack.Screen name="Explore" component={Explore} /> */}
-          {/* <Stack.Screen name="Setting" component={Setting} /> */}
-          <Stack.Screen
-            name="Product"
-            component={Product}
-            options={{
-              headerRight: () => (
-                <Button style={{marginRight: 20, justifyContent: 'flex-end'}}>
-                  <EntypoIcon
-                    name="dots-three-horizontal"
-                    size={16}
-                    color={theme.colors.gray2}
-                  />
-                </Button>
-              ),
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-}
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
