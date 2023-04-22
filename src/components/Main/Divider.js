@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import * as theme from '../constants/theme';
+import * as theme from '../../constants/Main/theme';
 
 export default class Divider extends Component {
   render() {

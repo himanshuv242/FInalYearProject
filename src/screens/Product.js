@@ -8,9 +8,9 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import * as theme from '../constants/theme';
-import * as mock from '../constants/mocks';
-import {Input, Button, Divider} from '../components';
+import * as theme from '../constants/Main/theme';
+import * as mock from '../constants/Main/mocks';
+import {Input, Button, Divider} from '../components/Main';
 const {width, height} = Dimensions.get('window');
 
 export default class Product extends Component {

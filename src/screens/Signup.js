@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { Button } from '../components';
-import * as theme from '../constants/theme';
+import { Button } from '../components/Main';
+import * as theme from '../constants/Main/theme';
 
 
 const Signup = () => {

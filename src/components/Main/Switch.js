@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Switch, Platform} from 'react-native';
-import * as theme from '../constants/theme';
+import * as theme from '../../constants/Main/theme';
 
 const GRAY_COLOR = 'rgba(168, 182, 200, 0.30)';
 

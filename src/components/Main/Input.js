@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, TextInput, StyleSheet} from 'react-native';
-import * as theme from '../constants/theme';
-import {Button} from '../components';
+import * as theme from '../../constants/Main/theme';
+import Button from './Button'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 export default class Input extends Component {

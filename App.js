@@ -10,10 +10,11 @@ import Signup from './src/screens/Signup';
 // import Browse from './src/screens/Browse';
 // import Explore from './src/screens/Explore';
 // import Setting from './src/screens/Setting';
-import * as theme from './src/constants/theme';
+import * as theme from './src/constants/Main/theme';
 import Product from './src/screens/Product';
-import {Button} from './src/components';
+import {Button} from './src/components/Main/Button';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import Dashboard from './src/screens/Dashboard';
 
 const Stack = createStackNavigator();
 
@@ -42,6 +43,7 @@ const App = () => {
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
         {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
         {/* <Stack.Screen name="Browse" component={Browse} /> */}
         {/* <Stack.Screen name="Explore" component={Explore} /> */}
@@ -63,6 +65,8 @@ const App = () => {
         />
       </Stack.Navigator>
     </NavigationContainer>
+
+    // <Dashboard/>
   );
 };
 

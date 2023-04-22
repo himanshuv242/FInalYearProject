@@ -9,8 +9,8 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import * as theme from '../constants/theme';
-import {Button, Input} from '../components';
+import * as theme from '../constants/Main/theme';
+import {Button, Input} from '../components/Main';
 
 const {width, height} = Dimensions.get('window');
 const VALID_EMAIL = 'contact@react-ui-kit.com';
@@ -88,7 +88,9 @@ export default class Login extends Component {
           <Button
             gradient
             style={{marginTop: theme.sizes.margin}}
-            onPress={() => this.handleLogin()}>
+            // onPress={() => this.handleLogin()}
+            onPress={() => navigation.navigate('Dashboard')}
+            >
             {loading ? (
               <ActivityIndicator color="white" size="small" />
             ) : (

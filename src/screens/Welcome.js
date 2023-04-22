@@ -11,8 +11,8 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import * as theme from '../constants/theme';
-import {Button} from '../components';
+import * as theme from '../constants/Main/theme';
+import {Button} from '../components/Main';
 
 const {width, height} = Dimensions.get('window');
 
