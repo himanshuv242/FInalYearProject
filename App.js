@@ -15,6 +15,7 @@ import Product from './src/screens/Product';
 import {Button} from './src/components/Main/Button';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Dashboard from './src/screens/Dashboard';
+import DSettings from './src/screens/DSettings';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="DSettings" component={DSettings} />
         {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
         {/* <Stack.Screen name="Browse" component={Browse} /> */}
         {/* <Stack.Screen name="Explore" component={Explore} /> */}
@@ -67,6 +69,7 @@ const App = () => {
     </NavigationContainer>
 
     // <Dashboard/>
+    // <DSettings/>
   );
 };
 

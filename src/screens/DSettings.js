@@ -1,12 +1,15 @@
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Slider has been extracted']);
+
 import React, { Component } from 'react'
 import { StyleSheet, TouchableWithoutFeedback, Slider } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import * as theme from '../theme';
-import { Block, Text, PanSlider } from '../components';
-import mocks from '../settings';
+import * as theme from '../constants/Dashboard/theme';
+import { Block, Text, PanSlider } from '../components/Dashboard/Index';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class Settings extends Component {
+class DSettings extends Component {
   static navigationOptions = {
     headerLeft: ({ onPress }) => (
       <TouchableWithoutFeedback onPress={() => onPress()}>
@@ -38,25 +41,32 @@ class Settings extends Component {
   }
 
   render() {
-    const { navigation, settings } = this.props;
-    const name = navigation.getParam('name');
-    const Icon = settings[name].icon;
+    const { navigation } = this.props;
+    // const name = App.getParam('name');
+    const Icon = () => (
+      <MaterialCommunityIcons
+        size={30}
+        color={ theme.colors.accent}
+        name="air-conditioner"
+      />
+    );
     
     return (
       <Block flex={1} style={styles.settings}>
-        <Block flex={0.5} row>
+         <Block flex={0.5} row>
           <Block column>
-            <Icon size={theme.sizes.font * 4} color={theme.colors.gray2} />
-            <Block flex={1.2} row style={{ alignItems: 'flex-end', }}>
+             <Icon size={theme.sizes.font * 4} color={theme.colors.gray2} /> 
+             <Block flex={1.2} row style={{ alignItems: 'flex-end', }}>
               <Text h1>27</Text>
               <Text h1 size={34} height={80} weight={'600'} spacing={0.1}>°C</Text>
-            </Block>
+            </Block> 
             <Text caption>Temperature</Text>
           </Block>
           <Block flex={1} center>
             <PanSlider />
           </Block>
         </Block>
+        
         <Block flex={1} style={{ paddingTop: theme.sizes.base * 2 }}>
           <Block column style={{ marginVertical: theme.sizes.base * 2 }}>
             <Block row space="between">
@@ -81,7 +91,7 @@ class Settings extends Component {
             </Block>
             <Slider
               value={12}
-              mininumValue={0}
+              minimumValue={0}
               maximumValue={30}
               thumbTintColor={theme.colors.accent}
               minimumTrackTintColor={theme.colors.accent}
@@ -95,15 +105,13 @@ class Settings extends Component {
   }
 }
 
-Settings.defaultProps = {
-  settings: mocks,
-}
 
-export default Settings;
+export default DSettings;
 
 const styles = StyleSheet.create({
   settings: {
     padding: theme.sizes.base * 2,
+    backgroundColor:'white'
   },
   slider: {
 

@@ -15,6 +15,7 @@ class Dashboard extends Component {
     header: null
   }
   render() {
+    const {navigation} = this.props;
  
     const LightIcon = ()=>(
         <MaterialCommunityIcons
@@ -82,8 +83,8 @@ class Dashboard extends Component {
           <Block column space="between">
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'light' })}
+                activeOpacity={0.5}
+                onPress={() => navigation.navigate('DSettings')}
               >
                 <Block center middle style={styles.button}>
                   <LightIcon size={38} />
@@ -98,7 +99,7 @@ class Dashboard extends Component {
               
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'ac' })}
+                onPress={() => navigation.navigate('DSettings', { name: 'ac' })}
               >
                 <Block center middle style={styles.button}>
                   <ACIcon size={38} />
@@ -115,7 +116,7 @@ class Dashboard extends Component {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'temperature' })}
+                onPress={() => navigation.navigate('DSettings', { name: 'temperature' })}
               >
                 <Block center middle style={styles.button}>
                   <TempIcon size={38} />
@@ -130,7 +131,7 @@ class Dashboard extends Component {
               
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'fan' })}
+                onPress={() => navigation.navigate('DSettings', { name: 'fan' })}
               >
                 <Block center middle style={styles.button}>
                   <FanIcon size={38} />
@@ -147,7 +148,7 @@ class Dashboard extends Component {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'wi-fi' })}
+                onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
               >
                 <Block center middle style={styles.button}>
                   <WiFiIcon size={38} />
@@ -162,7 +163,7 @@ class Dashboard extends Component {
               
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings', { name: 'electricity' })}
+                onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
               >
                 <Block center middle style={styles.button}>
                   <ElectricityIcon size={38} />
