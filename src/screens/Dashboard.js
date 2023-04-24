@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { LineChart, Path } from 'react-native-svg-charts'
-import * as shape from 'd3-shape'
+// import { LineChart, Path } from 'react-native-svg-charts'
+// import * as shape from 'd3-shape'
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MyLineChart from './MyLineChart';
+// import MyLineChart from './MyLineChart';
  
 
 class Dashboard extends Component {
@@ -73,8 +73,10 @@ class Dashboard extends Component {
             <Text h1 size={34} height={80} weight='600' spacing={0.1}>°C</Text>
           </Block>
           <Block flex={1} column>
-            <Text caption>Humidity 20%</Text>
-            <MyLineChart/>
+            <Text caption>Humidity</Text>
+            <Text size={40} height={80} color={'#0AC4BA'}>91%</Text>
+
+            {/* <MyLineChart/> */}
 
           </Block>
         </Block> 

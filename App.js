@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-import {Text, View, Image, Settings} from 'react-native';
+import React,{useState} from 'react';
+import {Text, View, Image, Settings,} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Welcome from './src/screens/Welcome';
@@ -16,11 +16,14 @@ import {Button} from './src/components/Main/Button';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Dashboard from './src/screens/Dashboard';
 import DSettings from './src/screens/DSettings';
+import Splash from './src/screens/Splash';
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  return isLoading ? <Splash setIsLoading={setIsLoading}/> :
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
@@ -41,6 +44,7 @@ const App = () => {
             paddingLeft: theme.sizes.padding,
           },
         }}>
+        {/* <Stack.Screen name="Hi," component={Splash} /> */}
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
@@ -66,11 +70,12 @@ const App = () => {
           }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer>;
 
     // <Dashboard/>
     // <DSettings/>
-  );
+    // <Splash/>
+  
 };
 
 export default App;

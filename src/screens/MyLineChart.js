@@ -1,6 +1,6 @@
 import React from 'react';
-import { LineChart } from 'react-native-svg-charts';
-import * as shape from 'd3-shape';
+// import { LineChart } from 'react-native-svg-charts';
+// import * as shape from 'd3-shape';
 import * as theme from '../constants/Dashboard/theme';
 
 const MyLineChart = () => (
