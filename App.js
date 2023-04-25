@@ -11,7 +11,6 @@ import Signup from './src/screens/Signup';
 // import Explore from './src/screens/Explore';
 // import Setting from './src/screens/Setting';
 import * as theme from './src/constants/Main/theme';
-import Product from './src/screens/Product';
 import {Button} from './src/components/Main/Button';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Dashboard from './src/screens/Dashboard';
@@ -54,7 +53,7 @@ const App = () => {
         {/* <Stack.Screen name="Browse" component={Browse} /> */}
         {/* <Stack.Screen name="Explore" component={Explore} /> */}
         {/* <Stack.Screen name="Setting" component={Setting} /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Product"
           component={Product}
           options={{
@@ -68,7 +67,7 @@ const App = () => {
               </Button>
             ),
           }}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>;
 
