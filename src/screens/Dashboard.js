@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-// import { LineChart, Path } from 'react-native-svg-charts'
-// import * as shape from 'd3-shape'
+import { ScrollView, StyleSheet, TouchableOpacity,Image } from 'react-native';
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import MyLineChart from './MyLineChart';
+
  
 
 class Dashboard extends Component {
@@ -18,46 +13,39 @@ class Dashboard extends Component {
     const {navigation} = this.props;
  
     const LightIcon = ()=>(
-        <MaterialCommunityIcons
-          size={30}
-          color={ theme.colors.accent}
-          name="lightbulb-on-outline"
-        />);
+      <Image
+      source={require('../assets/icons/bulb.png')}
+      style={{ width: 32, height: 32 }}
+    />);
     const ACIcon =() => (
-      <MaterialCommunityIcons
-        size={30}
-        color={ theme.colors.accent}
-        name="air-conditioner"
-      />
+      <Image
+      source={require('../assets/icons/crop.png')}
+      style={{ width: 32, height: 32 }}
+    />
     );
     const TempIcon = ()=> (
-      <MaterialCommunityIcons
-        size={30}
-        color={ theme.colors.accent}
-        name="temperature-celsius"
-      />
-    );
+      <Image
+      source={require('../assets/icons/weather.png')}
+      style={{ width: 32, height: 32 }}
+    />)
+    ;
     const FanIcon = ()=> (
-      <MaterialCommunityIcons
-        size={30}
-        color={theme.colors.accent}
-        name="fan"
-   
-      />
+      <Image
+      source={require('../assets/icons/fan.png')}
+      style={{ width: 32, height: 32 }}
+    />
     );
     const WiFiIcon = ()=> (
-      <FontAwesome
-        size={30}
-        color={theme.colors.accent}
-        name="wifi"
-      />
+      <Image
+      source={require('../assets/icons/wifi.png')}
+      style={{ width: 32, height: 32 }}
+    />
     );
     const ElectricityIcon = ()=> (
-      <MaterialIcons
-        size={30}
-        color={theme.colors.accent}
-        name="power"
-      />
+      <Image
+      source={require('../assets/icons/supply.png')}
+      style={{ width: 32, height: 32 }}
+    />
     );
 
     return (
@@ -100,7 +88,7 @@ class Dashboard extends Component {
               </TouchableOpacity>
               
               <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 onPress={() => navigation.navigate('DSettings', { name: 'ac' })}
               >
                 <Block center middle style={styles.button}>
@@ -109,7 +97,7 @@ class Dashboard extends Component {
                     button
                     style={{ marginTop: theme.sizes.base * 0.5 }}
                   >
-                    AC
+                    Crop Manual
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -117,7 +105,7 @@ class Dashboard extends Component {
             
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 onPress={() => navigation.navigate('DSettings', { name: 'temperature' })}
               >
                 <Block center middle style={styles.button}>
@@ -126,13 +114,13 @@ class Dashboard extends Component {
                     button
                     style={{ marginTop: theme.sizes.base * 0.5 }}
                   >
-                   Temperature
+                   Weather
                   </Text>
                 </Block>
               </TouchableOpacity>
               
               <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 onPress={() => navigation.navigate('DSettings', { name: 'fan' })}
               >
                 <Block center middle style={styles.button}>
@@ -149,7 +137,7 @@ class Dashboard extends Component {
 
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
               >
                 <Block center middle style={styles.button}>
@@ -164,7 +152,7 @@ class Dashboard extends Component {
               </TouchableOpacity>
               
               <TouchableOpacity
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
               >
                 <Block center middle style={styles.button}>
@@ -173,7 +161,7 @@ class Dashboard extends Component {
                     button
                     style={{ marginTop: theme.sizes.base * 0.5 }}
                   >
-                    Electricity
+                    Power Supply
                   </Text>
                 </Block>
               </TouchableOpacity>
