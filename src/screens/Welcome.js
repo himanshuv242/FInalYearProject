@@ -134,7 +134,6 @@ export default class Welcome extends Component {
             style={{
               color: theme.colors.gray,
               fontSize: theme.fonts.h2,
-              marginTop: 10,
             }}>
             Enjoy the experience.
           </Text>
@@ -213,17 +212,18 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    flex: 1.5,
-    marginTop:20,
+    flex: 2,
+    paddingVertical:15,
     justifyContent: 'center',
     alignItems: 'center',
   },
   illustrations: {
     flex: 6,
-    marginTop: 20,
+
   },
   btnContainer: {
     flex: 2,
+ 
   },
   dotContainer: {
     position: 'absolute',
