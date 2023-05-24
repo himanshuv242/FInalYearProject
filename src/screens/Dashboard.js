@@ -1,54 +1,90 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity,Image } from 'react-native';
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
-
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
  
 
-class Dashboard extends Component {
-  static navigationOptions = {
-    header: null
-  }
-  render() {
-    const {navigation} = this.props;
- 
-    const LightIcon = ()=>(
-      <Image
+const Dashboard = ({ navigation }) => {
+  const LightIcon = () => (
+    <Image
       source={require('../assets/icons/bulb.png')}
       style={{ width: 32, height: 32 }}
-    />);
-    const ACIcon =() => (
-      <Image
+    />
+  );
+  const ACIcon = () => (
+    <Image
       source={require('../assets/icons/crop.png')}
       style={{ width: 32, height: 32 }}
     />
-    );
-    const TempIcon = ()=> (
-      <Image
+  );
+  const TempIcon = () => (
+    <Image
       source={require('../assets/icons/weather.png')}
       style={{ width: 32, height: 32 }}
-    />)
-    ;
-    const FanIcon = ()=> (
-      <Image
+    />
+  );
+  const FanIcon = () => (
+    <Image
       source={require('../assets/icons/fan.png')}
       style={{ width: 32, height: 32 }}
     />
-    );
-    const WiFiIcon = ()=> (
-      <Image
+  );
+  const WiFiIcon = () => (
+    <Image
       source={require('../assets/icons/wifi.png')}
       style={{ width: 32, height: 32 }}
     />
-    );
-    const ElectricityIcon = ()=> (
-      <Image
+  );
+  const ElectricityIcon = () => (
+    <Image
       source={require('../assets/icons/supply.png')}
       style={{ width: 32, height: 32 }}
     />
-    );
+  );
 
-    return (
+  const [isMotorOn, setIsMotorOn] = useState('');
+
+  const fetchData = async () => {
+    try {
+      const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+      // console.log(`IP address is ${savedIPAddress}`);
+      
+      await axios.get(`http://${savedIPAddress}/led`).then(response => {
+        // console.log(response.data);
+        const stringifiedData = JSON.stringify(response.data);
+        if (stringifiedData === '"LED ON"') {
+          setIsMotorOn('LED OFF');
+        } else if (stringifiedData === '"LED OFF"') {
+          setIsMotorOn('LED ON');
+        }
+        // console.log(`setIsMotorOn is ${isMotorOn}`)
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      // await axios.get('http://192.168.170.177/led');
+      console.log('API request sent successfully');
+      // Handle any necessary UI updates or actions
+    } catch (error) {
+      console.error('Failed to send API request', error);
+      // Handle any errors that occurred during the request
+    }
+  };
+
+  const getButtonStyle = () => {
+    // Conditionally return the style based on the LED status
+    if (isMotorOn === 'LED ON') {
+      return styles.button;
+    } else if (isMotorOn === 'LED OFF') {
+      return styles.buttonOn;
+    } else {
+      return styles.button;
+    }
+  };
+
+  return (
       <Block style={styles.dashboard}>
          <Block column style={{ marginVertical: theme.sizes.base }}>
           <Text welcome>Hi,</Text>
@@ -121,15 +157,16 @@ class Dashboard extends Component {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings', { name: 'fan' })}
+                onPress={fetchData}
+                // onPress={() => navigation.navigate('DSettings', { name: 'fan' })}
               >
-                <Block center middle style={styles.button}>
+                <Block center middle style={[styles.button, getButtonStyle()]}>
                   <FanIcon size={38} />
                   <Text
                     button
                     style={{ marginTop: theme.sizes.base * 0.5 }}
                   >
-                    Fan
+                    Motor
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -169,14 +206,10 @@ class Dashboard extends Component {
           </Block>
         </ScrollView>
       </Block>
-    )
-  }
-}
-
-
-
-
-export default Dashboard;
+   );
+  };
+  
+  export default Dashboard;
 
 const styles = StyleSheet.create({
   dashboard: {
@@ -195,5 +228,8 @@ const styles = StyleSheet.create({
     width: 151,
     height: 151,
     borderRadius: 151 / 2,
-  }
+  },
+  buttonOn: {
+    backgroundColor: '#0AC4BA',
+  },
 })

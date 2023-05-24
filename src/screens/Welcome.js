@@ -155,7 +155,7 @@ export default class Welcome extends Component {
                   fontWeight: '500',
                   textAlign: 'center',
                 }}>
-                Login
+                Sign in
               </Text>
             </Button>
             <Button shadow onPress={() => navigation.navigate('Signup')}>
@@ -164,7 +164,7 @@ export default class Welcome extends Component {
                   textAlign: 'center',
                   color: theme.colors.gray
                 }}>
-                Signup
+                Sign Up
               </Text>
             </Button>
             <Button onPress={() => this.setState({isShowTerm: true})}>

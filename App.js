@@ -16,6 +16,7 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Dashboard from './src/screens/Dashboard';
 import DSettings from './src/screens/DSettings';
 import Splash from './src/screens/Splash';
+import MyComponent from './src/screens/MyComponent';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,7 @@ const App = () => {
     // <Dashboard/>
     // <DSettings/>
     // <Splash/>
+    // <MyComponent/>
   
 };
 
