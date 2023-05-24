@@ -158,7 +158,6 @@ const Dashboard = ({ navigation }) => {
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={fetchData}
-                // onPress={() => navigation.navigate('DSettings', { name: 'fan' })}
               >
                 <Block center middle style={[styles.button, getButtonStyle()]}>
                   <FanIcon size={38} />
