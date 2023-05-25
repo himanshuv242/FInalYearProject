@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity,Image } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity,Image,Alert, } from 'react-native';
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
@@ -59,10 +59,14 @@ const Dashboard = ({ navigation }) => {
         } else if (stringifiedData === '"LED OFF"') {
           setIsMotorOn('LED ON');
         }
+        // else{
+        //   Alert.alert('No internet connection!', 'Please check your internet connection.');
+        // }
         // console.log(`setIsMotorOn is ${isMotorOn}`)
       })
       .catch(error => {
         console.log(error);
+        Alert.alert('No internet connection!', 'Please connect to a stable internet connection.');
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('API request sent successfully');
