@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, StyleSheet, ScrollView , } from 'react-native';
+import { View, TouchableOpacity, Text, Image, StyleSheet, ScrollView , LayoutAnimation} from 'react-native';
 import cropData from '../cropData';
+import { Table, Row, Rows } from 'react-native-table-component';
+import rice from '../assets/crops/rice.png'
 const YourComponent = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
   const toggleAccordion = (index) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setActiveAccordion(index === activeAccordion ? null : index);
   };
   
@@ -15,30 +18,59 @@ const YourComponent = () => {
     setCrops(cropData);
   }, []);
 
+  const renderTableData = (crop) => {
+    const tableData = [
+      ['Weather Conditions', crop.weatherConditions],
+      ['Temperature Range', crop.temperatureRange],
+      ['Soil Type', crop.soilType],
+      ['Water Requirements', crop.waterRequirements],
+      ['High', crop.high],
+      ['Medium', crop.medium],
+      ['Low', crop.low],
+      ['Growing Season', crop.growingSeason],
+      ['Planting Depth', crop.plantingDepth],
+      ['Fertilizer Requirements', crop.fertilizerRequirements],
+      ['Pest and Disease Susceptibility', crop.pestAndDiseaseSusceptibility],
+      ['Harvesting Time', crop.harvestingTime],
+      ['Crop Rotation Recommendations', crop.cropRotationRecommendations],
+      ['Storage and Post-Harvest Handling', crop.storageAndPostHarvestHandling],
+      ['Common Cultivation Practices', crop.commonCultivationPractices],
+    ];
+
+    return (
+        <View style={[styles.tableContainer, styles.tableShadow]}>
+        <Table>
+          <Row data={['Property', 'Value']} style={styles.tableHeader} textStyle={styles.tableHeaderText} />
+          <Rows data={tableData} style={styles.tableRow} textStyle={styles.tableRowText} />
+        </Table>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-        <Text style={styles.heading}>Know more about your crop :)</Text>
-        <ScrollView >
-      {crops.map((crop, index) => (
-        <View key={index} style={[styles.accordionContainer]}>
-          <TouchableOpacity onPress={() => toggleAccordion(index)}>
-            <View style={styles.accordionHeader}>
-              <Image style={styles.cropImage} />
-              <View style={styles.cropInfo}>
-                <Text style={styles.cropName}>{crop['cropName']} :</Text>
-                <Text style={styles.cropDescription}>{crop['region']}</Text>
-                <Text style={styles.cropType}>{crop['cropType']}</Text>
+      <Text style={styles.heading}>Know more about your crop :)</Text>
+      <ScrollView>
+        {crops.map((crop, index) => (
+          <View key={index} style={[styles.accordionContainer]}>
+            <TouchableOpacity onPress={() => toggleAccordion(index)}>
+              <View style={styles.accordionHeader}>
+                <Image source={rice} style={styles.cropImage} />
+                <View style={styles.cropInfo}>
+                  <Text style={styles.cropName}>{crop.cropName} :</Text>
+                  <Text style={styles.cropDescription}>{crop.region}</Text>
+                  <Text style={styles.cropType}>{crop.cropType}</Text>
+                </View>
+                <Text style={styles.arrowIcon}>{activeAccordion === index ? '-' : '+'}</Text>
               </View>
-              <Text style={styles.arrowIcon}>{activeAccordion === index ? '-' : '+'}</Text>
-            </View>
-          </TouchableOpacity>
-          {activeAccordion === index && (
-            <View style={styles.accordionContent}>
-              {/* <Text style={styles.contentText}>{item.content}</Text> */}
-            </View>
-          )}
-        </View>
-      ))}
+            </TouchableOpacity>
+            {activeAccordion === index && (
+              <View style={styles.accordionContent}>
+                {renderTableData(crop)}
+              </View>
+            )}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
@@ -87,7 +119,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginRight: 10,
-    borderRadius: 20,
+    borderRadius: 10,
+    backgroundColor:"white",
   },
   cropInfo: {
     flex: 1,
@@ -128,6 +161,38 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#555',
     lineHeight: 20,
+  },
+  tableHeader: {
+    backgroundColor: '#f2f2f2',
+  },
+  tableHeaderText: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    color: '#333',
+    textAlign: 'center',
+  },
+  tableRow: {
+    backgroundColor: '#fff',
+  },
+  tableRowText: {
+    fontSize: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    color: '#666',
+    textAlign: 'center',
+  },
+  tableContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  tableShadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
