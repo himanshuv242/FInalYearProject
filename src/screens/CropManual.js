@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, ScrollView , LayoutAnimation} from 'react-native';
 import cropData from '../cropData';
 import { Table, Row, Rows } from 'react-native-table-component';
-import rice from '../assets/crops/rice.png'
 const YourComponent = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
@@ -47,6 +46,33 @@ const YourComponent = () => {
     );
   };
 
+  const cropImageMapping = {
+    Rice: require('../assets/crops/rice.png'),
+    Maize: require('../assets/crops/corn.png'),
+    Wheat: require('../assets/crops/wheat.png'),
+    Pulses: require('../assets/crops/lentils.png'),
+    Sugarcane: require('../assets/crops/sugar-cane.png'),
+    Cotton: require('../assets/crops/cotton.png'),
+    Cotton: require('../assets/crops/cotton.png'),
+    Tea: require('../assets/crops/tea.png'),
+    Coffee: require('../assets/crops/coffee.png'),
+    Potatoes: require('../assets/crops/potato.png'),
+    Onions: require('../assets/crops/onion.png'),
+    Tomatoes: require('../assets/crops/tomato.png'),
+    Cauliflower: require('../assets/crops/cauliflower.png'),
+    Cabbage: require('../assets/crops/cabbage.png'),
+    Brinjal : require('../assets/crops/eggplant.png'),
+    Okra : require('../assets/crops/okra.png'),
+    Mangoes : require('../assets/crops/mango.png'),
+    Lemon : require('../assets/crops/lemon.png'),
+    Grapes : require('../assets/crops/grapes.png'),
+    Guavas : require('../assets/crops/guava.png'),
+    Papayas : require('../assets/crops/papaya.png'),
+    Bananas : require('../assets/crops/banana.png'),
+    Apples : require('../assets/crops/apple.png'),
+    Pomegranates : require('../assets/crops/pomegranate.png'),
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Know more about your crop :)</Text>
@@ -55,7 +81,7 @@ const YourComponent = () => {
           <View key={index} style={[styles.accordionContainer]}>
             <TouchableOpacity onPress={() => toggleAccordion(index)}>
               <View style={styles.accordionHeader}>
-                <Image source={rice} style={styles.cropImage} />
+                <Image source={cropImageMapping[crop.cropName]} style={styles.cropImage} />
                 <View style={styles.cropInfo}>
                   <Text style={styles.cropName}>{crop.cropName} :</Text>
                   <Text style={styles.cropDescription}>{crop.region}</Text>
@@ -116,11 +142,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDD692',
   },
   cropImage: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     marginRight: 10,
     borderRadius: 10,
-    backgroundColor:"white",
+    backgroundColor:"beige",
   },
   cropInfo: {
     flex: 1,

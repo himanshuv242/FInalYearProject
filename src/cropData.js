@@ -21,7 +21,7 @@ const data = [
     "harvestingTime": "3-6 months",
     "cropRotationRecommendations": "Legumes, Millets, Wheat",
     "storageAndPostHarvestHandling": "Proper drying and storage",
-    "commonCultivationPractices": "Regular weeding, water management"
+    "commonCultivationPractices": "Regular weeding, water management",
   },
   {
     "cropName":"Maize",
@@ -280,7 +280,7 @@ const data = [
       "commonCultivationPractices": "Regular irrigation, pest control, proper spacing"
     },
 {
-      "cropName": "Brinjal (Eggplant)",
+      "cropName": "Brinjal",
       "cropType": "Vegetable",
       "region": "Cultivated in warm and sunny regions worldwide",
       "weatherConditions": "Warm and sunny",
@@ -300,7 +300,7 @@ const data = [
       "commonCultivationPractices": "Staking or caging, regular irrigation, pest control"
     },
 {
-      "cropName": "Lady's Finger (Okra)",
+      "cropName": "Okra",
       "cropType": "Vegetable",
       "region": "Cultivated in warm and sunny regions worldwide",
       "weatherConditions": "Warm and sunny",
@@ -343,7 +343,7 @@ const data = [
         "region": "Requires hot and tropical climates with well-drained sandy soil."
       },
     {
-        "cropName": "Citrus Fruits",
+        "cropName": "Lemon",
         "cropType": "Fruits",
         "weatherConditions": "Warm and sunny",
         "temperatureRange": "15-30°C (varies by citrus type)",

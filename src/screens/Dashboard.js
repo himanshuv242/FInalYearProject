@@ -129,7 +129,7 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings', { name: 'ac' })}
+                onPress={() => navigation.navigate('Crop Manual')}
               >
                 <Block center middle style={styles.button}>
                   <ACIcon size={38} />
