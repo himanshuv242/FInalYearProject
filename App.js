@@ -1,23 +1,17 @@
 import 'react-native-gesture-handler';
 import React,{useState} from 'react';
-import {Text, View, Image, Settings,} from 'react-native';
+import {Image} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Welcome from './src/screens/Welcome';
 import Login from './src/screens/Login';
 import Signup from './src/screens/Signup';
-// import Forgot from './src/screens/Forgot';
-// import Browse from './src/screens/Browse';
-// import Explore from './src/screens/Explore';
-// import Setting from './src/screens/Setting';
 import * as theme from './src/constants/Main/theme';
-import {Button} from './src/components/Main/Button';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import Dashboard from './src/screens/Dashboard';
-import DSettings from './src/screens/DSettings';
-import AccordionItem from './src/screens/CropManual';
 import Splash from './src/screens/Splash';
 import CropManual from './src/screens/CropManual';
+import Weather from './src/screens/Weather';
+
 
 const Stack = createStackNavigator();
 
@@ -30,9 +24,11 @@ const App = () => {
         screenOptions={{
           headerStyle: {
             height: theme.sizes.base * 3,
-            // backgroundColor: 'transparent',
             borderBottomColor: '#fff',
-            shadowColor: '#000'
+            shadowColor: '#000',
+            backgroundColor: 'rgba(255, 255, 255, 0)', // Set the background color to white with transparency
+          borderBottomWidth: 0, // Remove the bottom border
+          elevation: 0, // Remove shadow on Android
           },
           headerTitleAlign: 'left',
 
@@ -45,40 +41,20 @@ const App = () => {
             paddingLeft: theme.sizes.padding,
           },
         }}>
-        {/* <Stack.Screen name="Hi," component={Splash} /> */}
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
-        <Stack.Screen name="DSettings" component={DSettings} />
         <Stack.Screen name="Crop Manual" component={CropManual} />
-        {/* <Stack.Screen name="Forgot" component={Forgot} /> */}
-        {/* <Stack.Screen name="Browse" component={Browse} /> */}
-        {/* <Stack.Screen name="Explore" component={Explore} /> */}
-        {/* <Stack.Screen name="Setting" component={Setting} /> */}
-        {/* <Stack.Screen
-          name="Product"
-          component={Product}
-          options={{
-            headerRight: () => (
-              <Button style={{marginRight: 20, justifyContent: 'flex-end'}}>
-                <EntypoIcon
-                  name="dots-three-horizontal"
-                  size={16}
-                  color={theme.colors.gray2}
-                />
-              </Button>
-            ),
-          }}
-        /> */}
+        <Stack.Screen name="Weather Forecasting" component={Weather}  />
       </Stack.Navigator>
     </NavigationContainer>;
 
     // <Dashboard/>
-    // <DSettings/>
     // <Splash/>
     // <MyComponent/>
     // <CropManual/>
+    // <Weather/>
   
 };
 

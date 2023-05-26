@@ -59,10 +59,6 @@ const Dashboard = ({ navigation }) => {
         } else if (stringifiedData === '"LED OFF"') {
           setIsMotorOn('LED ON');
         }
-        // else{
-        //   Alert.alert('No internet connection!', 'Please check your internet connection.');
-        // }
-        // console.log(`setIsMotorOn is ${isMotorOn}`)
       })
       .catch(error => {
         console.log(error);
@@ -87,6 +83,8 @@ const Dashboard = ({ navigation }) => {
       return styles.button;
     }
   };
+
+
 
   return (
       <Block style={styles.dashboard}>
@@ -114,7 +112,7 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings')}
+                // onPress={() => navigation.navigate('DSettings')}
               >
                 <Block center middle style={styles.button}>
                   <LightIcon size={38} />
@@ -146,7 +144,7 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings', { name: 'temperature' })}
+                onPress={() => navigation.navigate('Weather Forecasting')}
               >
                 <Block center middle style={styles.button}>
                   <TempIcon size={38} />
@@ -178,7 +176,7 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
+                // onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
               >
                 <Block center middle style={styles.button}>
                   <Timer size={38} />
@@ -193,7 +191,7 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
+                // onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
               >
                 <Block center middle style={styles.button}>
                   <ElectricityIcon size={38} />
