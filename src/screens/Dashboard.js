@@ -31,9 +31,9 @@ const Dashboard = ({ navigation }) => {
       style={{ width: 32, height: 32 }}
     />
   );
-  const WiFiIcon = () => (
+  const Timer = () => (
     <Image
-      source={require('../assets/icons/wifi.png')}
+      source={require('../assets/icons/stopwatch.png')}
       style={{ width: 32, height: 32 }}
     />
   );
@@ -66,7 +66,7 @@ const Dashboard = ({ navigation }) => {
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('No internet connection!', 'Please connect to a stable internet connection.');
+        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('API request sent successfully');
@@ -181,12 +181,12 @@ const Dashboard = ({ navigation }) => {
                 onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
               >
                 <Block center middle style={styles.button}>
-                  <WiFiIcon size={38} />
+                  <Timer size={38} />
                   <Text
                     button
                     style={{ marginTop: theme.sizes.base * 0.5 }}
                   >
-                    Wi-Fi
+                    Motor Timer
                   </Text>
                 </Block>
               </TouchableOpacity>
