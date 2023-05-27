@@ -37,12 +37,23 @@ const YourComponent = () => {
     ];
 
     return (
-        <View style={[styles.tableContainer, styles.tableShadow]}>
-        <Table>
-          <Row data={['Property', 'Value']} style={styles.tableHeader} textStyle={styles.tableHeaderText} />
-          <Rows data={tableData} style={styles.tableRow} textStyle={styles.tableRowText} />
-        </Table>
-      </View>
+      <View style={[styles.tableContainer, styles.tableShadow]}>
+      <Table >
+        <Row
+          data={['Property', 'Value']}
+          style={styles.tableHeader}
+          textStyle={styles.tableHeaderText}
+        />
+        <Rows
+          data={tableData}
+          style={styles.tableRow}
+          textStyle={styles.tableRowText}
+        />
+      </Table>
+    </View>
+    
+
+
     );
   };
 
@@ -128,10 +139,10 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   accordionContainer: {
+    backgroundColor: '#fff',
     marginBottom: 10,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: '#fff',
     elevation: 2,
   },
   accordionHeader: {
@@ -139,14 +150,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    backgroundColor: '#FDD692',
+    backgroundColor: '#0E8388',
   },
   cropImage: {
     width: 50,
     height: 50,
     marginRight: 10,
     borderRadius: 10,
-    backgroundColor:"beige",
+    backgroundColor:"white",
   },
   cropInfo: {
     flex: 1,
@@ -155,15 +166,14 @@ const styles = StyleSheet.create({
   cropName: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
     marginBottom: 4,
   },
   cropType: {
     fontSize: 10,
     fontWeight: 'light',
-    color: '#333',
     alignSelf:'flex-end',
-    color:"green",
+    color:"white",
     borderColor:"black",
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 1, height: 1 },
@@ -171,12 +181,12 @@ const styles = StyleSheet.create({
   },
   cropDescription: {
     fontSize: 14,
-    color: '#666',
+    color: '#D2E9E9',
   },
   arrowIcon: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#98EECC',
   },
   accordionContent: {
     paddingVertical: 12,
@@ -190,6 +200,12 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     backgroundColor: '#f2f2f2',
+    fontWeight: 'bold',
+    fontSize: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    color: '#333',
+    textAlign: 'center',
   },
   tableHeaderText: {
     fontWeight: 'bold',
@@ -219,7 +235,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
+  }
+  
 });
 
 export default YourComponent;
