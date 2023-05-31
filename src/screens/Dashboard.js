@@ -45,8 +45,9 @@ const Dashboard = ({ navigation }) => {
   );
 
   const [isMotorOn, setIsMotorOn] = useState('');
-
-  const fetchData = async () => {
+  const [isLightOn, setIsLightOn] = useState('');
+//API call for switching motor
+  const motor = async () => {
     try {
       const savedIPAddress = await AsyncStorage.getItem('ipAddress');
       // console.log(`IP address is ${savedIPAddress}`);
@@ -73,11 +74,52 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-  const getButtonStyle = () => {
+
+//API call for switching light
+  const light = async () => {
+    try {
+      const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+      // console.log(`IP address is ${savedIPAddress}`);
+      
+      await axios.get(`http://${savedIPAddress}/light`).then(response => {
+        // console.log(response.data);
+        const stringifiedData = JSON.stringify(response.data);
+        if (stringifiedData === '"Light ON"') {
+          setIsLightOn('Light OFF');
+        } else if (stringifiedData === '"Light OFF"') {
+          setIsLightOn('Light ON');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+      });
+      // await axios.get('http://192.168.170.177/led');
+      console.log('API request sent successfully');
+      // Handle any necessary UI updates or actions
+    } catch (error) {
+      console.error('Failed to send API request', error);
+      // Handle any errors that occurred during the request
+    }
+  };
+//for setting motor button style as per switching status
+  const getMotorStyle = () => {
     // Conditionally return the style based on the LED status
     if (isMotorOn === 'LED ON') {
       return styles.button;
     } else if (isMotorOn === 'LED OFF') {
+      return styles.buttonOn;
+    } else {
+      return styles.button;
+    }
+  };
+
+  //for setting light button style as per switching status
+  const getLightStyle = () => {
+    // Conditionally return the style based on the LED status
+    if (isLightOn === 'Light ON') {
+      return styles.button;
+    } else if (isLightOn === 'Light OFF') {
       return styles.buttonOn;
     } else {
       return styles.button;
@@ -112,9 +154,9 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings')}
+                onPress={light}
               >
-                <Block center middle style={styles.button}>
+                <Block center middle style={[styles.button, getLightStyle()]}>
                   <LightIcon size={38} />
                   <Text
                     button
@@ -159,9 +201,9 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={fetchData}
+                onPress={motor}
               >
-                <Block center middle style={[styles.button, getButtonStyle()]}>
+                <Block center middle style={[styles.button, getMotorStyle()]}>
                   <FanIcon size={38} />
                   <Text
                     button
