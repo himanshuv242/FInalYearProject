@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Block} from '../components/Dashboard/Index';
+import * as theme from '../constants/Dashboard/theme';
 
 const WaterLevel = () => {
   const [waterLevel, setWaterLevel] = useState('');
-  const [motorStatus, setMotorStatus] = useState('OFF');
+  const [isMotorOn, setIsMotorOn] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('');
   const [isSetButtonDisabled, setIsSetButtonDisabled] = useState(true);
   const [inputStatus, setInputStatus] = useState('');
 
   useEffect(() => {
-
-    
     const fetchData = async () => {
       try {
-        const savedIPAddress = await AsyncStorage.getItem('ipAddress');
-        if (selectedLevel === 'High' && waterLevel >= 500) {
-          console.log("Inside High");
-          handleMotorOn();
-          setSelectedLevel(null);
-        } else if (selectedLevel === 'Medium' && waterLevel >= 300) {
-          console.log("Inside Medium");
-          handleMotorOn();
-          setSelectedLevel(null);
-        } else if (selectedLevel === 'Low' && waterLevel>=150) {
-          console.log("Inside Low");
-          handleMotorOn();
-          setSelectedLevel(null);
-        }
+        // const savedIPAddress = await AsyncStorage.getItem('ipAddress');
         await axios.get('http://192.168.172.176/watersensor').then(response => {
           // console.log(response.data);
           const stringifiedData = JSON.stringify(response.data);
+          if (selectedLevel === 'High' && stringifiedData >= 500) {
+            console.log("Inside High");
+            motor();
+            setSelectedLevel(null);
+          } else if (selectedLevel === 'Medium' && stringifiedData >= 300) {
+            console.log("Inside Medium");
+            motor();
+            setSelectedLevel(null);
+          } else if (selectedLevel === 'Low' && stringifiedData>=150) {
+            console.log("Inside Low");
+            motor();
+            setSelectedLevel(null);
+          }
           setWaterLevel(stringifiedData);
         })
         .catch(error => {
@@ -49,29 +49,28 @@ const WaterLevel = () => {
 
     const interval = setInterval(fetchData, 500); // Fetch data every .5 seconds
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [motorStatus, selectedLevel]);
+  }, [isMotorOn, selectedLevel]);
 
-  const handleMotorOn = async () => {
+  const motor = async () => {
     try {
-      const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+      // const savedIPAddress = await AsyncStorage.getItem('ipAddress');
       // console.log(`IP address is ${savedIPAddress}`);
       
       await axios.get(`http://192.168.172.176/led`).then(response => {
-        // console.log(response.data);
+        // console.log(response.data);http://${savedIPAddress}/led
         const stringifiedData = JSON.stringify(response.data);
         if (stringifiedData === '"LED ON"') {
-          setMotorStatus('ON');
+          setIsMotorOn('LED OFF');
         } else if (stringifiedData === '"LED OFF"') {
-          setMotorStatus('OFF');
+          setIsMotorOn('LED ON');
         }
-        console.log(motorStatus);
       })
       .catch(error => {
         console.log(error);
         Alert.alert('Unable to connect!', 'Please check your connection to the module.');
       });
       // await axios.get('http://192.168.170.177/led');
-      // console.log('Motor switch request sent successfully');
+      console.log('Motor switched successfully');
       // Handle any necessary UI updates or actions
     } catch (error) {
       console.error('Failed to send API request', error);
@@ -87,16 +86,40 @@ const WaterLevel = () => {
   };
 
   const handleSetButtonClick = () => {
-    if (selectedLevel) {
-      handleMotorOn();
+    
+    if (selectedLevel && isMotorOn!=='') {
+      motor();
       setIsSetButtonDisabled(true);
     }
+    else
+    {
+      Alert.alert('Motor status unknown!', 'Please check your motor status by pressing below motor button.');
+    }
   };
+
+
+  const FanIcon = () => (
+    <Image
+      source={require('../assets/icons/fan.png')}
+      style={{ width: 32, height: 32 }}
+    />
+  );
+
+  const getMotorStyle = () => {
+    // Conditionally return the style based on the LED status
+    if (isMotorOn === 'LED ON') {
+      return styles.motorButton;
+    } else if (isMotorOn === 'LED OFF') {
+      return styles.buttonOn;
+    } else {
+      return styles.motorButton;
+    }
+  };
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.waterLevelText}>Water Level: {waterLevel}</Text>
-      <Text style={styles.motorStatusText}>Motor Status: {motorStatus}</Text>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -105,6 +128,7 @@ const WaterLevel = () => {
             selectedLevel === 'High' && styles.selectedLevelButton,
           ]}
           onPress={() => handleSetWaterLevel('High')}
+          disabled={ isMotorOn==='LED OFF'}
         >
           <Text style={styles.levelButtonText}>High</Text>
         </TouchableOpacity>
@@ -115,6 +139,7 @@ const WaterLevel = () => {
             selectedLevel === 'Medium' && styles.selectedLevelButton,
           ]}
           onPress={() => handleSetWaterLevel('Medium')}
+          disabled={ isMotorOn==='LED OFF'}
         >
           <Text style={styles.levelButtonText}>Medium</Text>
         </TouchableOpacity>
@@ -125,29 +150,44 @@ const WaterLevel = () => {
             selectedLevel === 'Low' && styles.selectedLevelButton,
           ]}
           onPress={() => handleSetWaterLevel('Low')}
+          disabled={ isMotorOn==='LED OFF'}
         >
           <Text style={styles.levelButtonText}>Low</Text>
         </TouchableOpacity>
       </View>
 
+{/* SET */}
       <TouchableOpacity
-        style={[
-          styles.actionButton,
-          motorStatus === 'Off' && styles.turnOnButton,
-          isSetButtonDisabled && styles.disabledButton,
-        ]}
+        // style={[
+        //   styles.actionButton,
+        //   isMotorOn === 'Off' && styles.turnOnButton,
+        //   isSetButtonDisabled && styles.disabledButton,
+        // ]}
+        style={[styles.actionButton, { opacity: (isSetButtonDisabled || isMotorOn==='LED OFF')? 0.5 : 1 }]}
         onPress={handleSetButtonClick}
-        disabled={isSetButtonDisabled}
+        disabled={isSetButtonDisabled || isMotorOn==='LED OFF'}
       >
         <Text style={styles.actionButtonText}>Set</Text>
       </TouchableOpacity>
 
+{/* MOTOR */}
+      <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={motor}
+              >
+                <Block center middle style={[styles.motorButton, getMotorStyle()]}>
+                  <FanIcon size={38} />
+                  <Text
+                    button
+                    style={{ marginTop: theme.sizes.base * 0.5, color:'black', fontWeight:'bold' }}
+                  >
+                    Motor
+                  </Text>
+                </Block>
+              </TouchableOpacity>
+
       {inputStatus !== '' && (
         <Text style={styles.inputStatus}>{inputStatus}</Text>
-      )}
-
-      {motorStatus === 'Off' && (
-        <Text style={styles.message}>Motor is currently off</Text>
       )}
       
     </View>
@@ -195,6 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
     backgroundColor: '#007AFF',
+    marginBottom:10
   },
   turnOnButton: {
     backgroundColor: '#FF0000',
@@ -227,6 +268,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     // color: '#FF0000',
     marginBottom: 20,
+  },
+  motorButton: {
+    backgroundColor: theme.colors.button,
+    width: 100,
+    height: 100,
+    borderRadius: 151 / 2,
+    borderWidth: 5,
+    borderColor: "#89AAFF",
+    marginTop:10
+  },
+  buttonOn: {
+    backgroundColor: '#FF851B',
   },
 });
 

@@ -14,6 +14,7 @@ import {Block} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
 
+
 const screen = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -98,7 +99,7 @@ const App = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [inputHours, setInputHours] = useState("0");
   const [inputMinutes, setInputMinutes] = useState("0");
-  const [inputSeconds, setInputSeconds] = useState("30");
+  const [inputSeconds, setInputSeconds] = useState("15");
   const [isMotorOn, setIsMotorOn] = useState('');
   const [waterLevel, setWaterLevel] = useState('');
 
