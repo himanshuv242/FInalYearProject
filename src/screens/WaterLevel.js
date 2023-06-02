@@ -4,6 +4,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Block} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
+import SoundPlayer from 'react-native-sound-player';
 
 const WaterLevel = () => {
   const [waterLevel, setWaterLevel] = useState('');
@@ -15,8 +16,8 @@ const WaterLevel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const savedIPAddress = await AsyncStorage.getItem('ipAddress');
-        await axios.get('http://192.168.172.176/watersensor').then(response => {
+        const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+        await axios.get(`http://${savedIPAddress}/watersensor`).then(response => {
           // console.log(response.data);
           const stringifiedData = JSON.stringify(response.data);
           if (selectedLevel === 'High' && stringifiedData >= 500) {
@@ -53,15 +54,17 @@ const WaterLevel = () => {
 
   const motor = async () => {
     try {
-      // const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+      const savedIPAddress = await AsyncStorage.getItem('ipAddress');
       // console.log(`IP address is ${savedIPAddress}`);
       
-      await axios.get(`http://192.168.172.176/led`).then(response => {
+      await axios.get(`http://${savedIPAddress}/led`).then(response => {
         // console.log(response.data);http://${savedIPAddress}/led
         const stringifiedData = JSON.stringify(response.data);
         if (stringifiedData === '"LED ON"') {
+          SoundPlayer.playSoundFile('on', 'mp3');
           setIsMotorOn('LED OFF');
         } else if (stringifiedData === '"LED OFF"') {
+          SoundPlayer.playSoundFile('off', 'mp3');
           setIsMotorOn('LED ON');
         }
       })

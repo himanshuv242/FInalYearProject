@@ -4,6 +4,7 @@ import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SoundPlayer from 'react-native-sound-player';
  
 
 const Dashboard = ({ navigation }) => {
@@ -56,8 +57,10 @@ const Dashboard = ({ navigation }) => {
         // console.log(response.data);
         const stringifiedData = JSON.stringify(response.data);
         if (stringifiedData === '"LED ON"') {
+          SoundPlayer.playSoundFile('on', 'mp3');
           setIsMotorOn('LED OFF');
         } else if (stringifiedData === '"LED OFF"') {
+          SoundPlayer.playSoundFile('off', 'mp3');
           setIsMotorOn('LED ON');
         }
       })
@@ -66,7 +69,7 @@ const Dashboard = ({ navigation }) => {
         Alert.alert('Unable to connect!', 'Please check your connection to the module.');
       });
       // await axios.get('http://192.168.170.177/led');
-      console.log('API request sent successfully');
+      console.log('Motor switched successfully');
       // Handle any necessary UI updates or actions
     } catch (error) {
       console.error('Failed to send API request', error);
@@ -95,7 +98,7 @@ const Dashboard = ({ navigation }) => {
         Alert.alert('Unable to connect!', 'Please check your connection to the module.');
       });
       // await axios.get('http://192.168.170.177/led');
-      console.log('API request sent successfully');
+      console.log('Light switched successfully');
       // Handle any necessary UI updates or actions
     } catch (error) {
       console.error('Failed to send API request', error);
