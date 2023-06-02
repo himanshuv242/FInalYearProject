@@ -218,7 +218,7 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
+                onPress={() => navigation.navigate('Motor Timer')}
               >
                 <Block center middle style={styles.button}>
                   <Timer size={38} />

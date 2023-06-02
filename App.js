@@ -10,6 +10,7 @@ import * as theme from './src/constants/Main/theme';
 import Dashboard from './src/screens/Dashboard';
 import Splash from './src/screens/Splash';
 import CropManual from './src/screens/CropManual';
+import MotorTimer from './src/screens/MotorTimer';
 import Weather from './src/screens/Weather';
 
 
@@ -47,6 +48,7 @@ const App = () => {
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Crop Manual" component={CropManual} />
         <Stack.Screen name="Weather Forecasting" component={Weather}  />
+        <Stack.Screen name="Motor Timer" component={MotorTimer}  />
       </Stack.Navigator>
     </NavigationContainer>;
 
@@ -55,6 +57,7 @@ const App = () => {
     // <MyComponent/>
     // <CropManual/>
     // <Weather/>
+    // <MotorTimer/>
   
 };
 
