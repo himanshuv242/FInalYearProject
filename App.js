@@ -12,6 +12,8 @@ import Splash from './src/screens/Splash';
 import CropManual from './src/screens/CropManual';
 import MotorTimer from './src/screens/MotorTimer';
 import Weather from './src/screens/Weather';
+import ForgotPasswordScreen from './src/screens/ForgotPassword';
+
 
 
 const Stack = createStackNavigator();
@@ -49,6 +51,7 @@ const App = () => {
         <Stack.Screen name="Crop Manual" component={CropManual} />
         <Stack.Screen name="Weather Forecasting" component={Weather}  />
         <Stack.Screen name="Motor Timer" component={MotorTimer}  />
+        <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen}  />
       </Stack.Navigator>
     </NavigationContainer>;
 
@@ -57,7 +60,6 @@ const App = () => {
     // <MyComponent/>
     // <CropManual/>
     // <Weather/>
-    // <MotorTimer/>
   
 };
 
