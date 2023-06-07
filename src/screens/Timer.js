@@ -232,6 +232,11 @@ const App = () => {
     inputHours === "" || inputMinutes === "" || inputSeconds === "";
   const isStartButtonDisabled = isRunning || isInputEmpty;
 
+  const handleMotorButtonClick = () => {
+    setIsRunning(false);
+    motor();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.waterLevelText}>Water Level: {waterLevel}</Text>
@@ -282,7 +287,7 @@ const App = () => {
 
 <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={motor}
+                onPress={handleMotorButtonClick}
               >
                 <Block center middle style={[styles.motorButton, getMotorStyle()]}>
                   <FanIcon size={38} />

@@ -100,6 +100,12 @@ const WaterLevel = () => {
     }
   };
 
+  const handleMotorButtonClick = () => {
+    setSelectedLevel('');
+    setInputStatus('');
+    motor();
+  };
+
 
   const FanIcon = () => (
     <Image
@@ -176,7 +182,7 @@ const WaterLevel = () => {
 {/* MOTOR */}
       <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={motor}
+                onPress={handleMotorButtonClick}
               >
                 <Block center middle style={[styles.motorButton, getMotorStyle()]}>
                   <FanIcon size={38} />

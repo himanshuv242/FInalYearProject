@@ -5,6 +5,9 @@ import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SoundPlayer from 'react-native-sound-player';
+import { useEffect } from 'react';
+import { fetchWeatherForecast } from '../../api/weather';
+import { getData} from '../../utils/asyncStorage';
  
 
 const Dashboard = ({ navigation }) => {
@@ -47,6 +50,28 @@ const Dashboard = ({ navigation }) => {
 
   const [isMotorOn, setIsMotorOn] = useState('');
   const [isLightOn, setIsLightOn] = useState('');
+  const [weather, setWeather] = useState({});
+  const {current } = weather;
+
+  //fetch current city weather data
+  const fetchMyWeatherData = async () => {
+    let myCity = await getData('city');
+    let cityName = 'Srinagar';
+    if (myCity) {
+      cityName = myCity;
+    }
+    fetchWeatherForecast({
+      cityName,
+      days: '1',
+    }).then((data) => {
+      console.log(data);
+      setWeather(data);
+    });
+  };
+  useEffect(() => {
+    fetchMyWeatherData();
+  }, []);
+  
 //API call for switching motor
   const motor = async () => {
     try {
@@ -77,7 +102,6 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-
 //API call for switching light
   const light = async () => {
     try {
@@ -105,6 +129,7 @@ const Dashboard = ({ navigation }) => {
       // Handle any errors that occurred during the request
     }
   };
+
 //for setting motor button style as per switching status
   const getMotorStyle = () => {
     // Conditionally return the style based on the LED status
@@ -130,25 +155,27 @@ const Dashboard = ({ navigation }) => {
   };
 
 
-
   return (
       <Block style={styles.dashboard}>
-         <Block column style={{ marginVertical: theme.sizes.base }}>
+         <Block column style={{ marginTop: theme.sizes.base }}>
           <Text welcome>Hi,</Text>
           <Text name>Himanshu</Text>
         </Block>
         
-        <Block row style={{ paddingVertical: 10 }}>
-          <Block flex={1.5} row style={{ alignItems: 'flex-end', }}>
-            <Text h1>34</Text>
+        <Block row style={{ paddingVertical: 5 }}>
+        <Block flex={1} column>
+        {/* <Text caption >Srinagar</Text> */}
+          <Block flex={1.5} row style={{ alignItems: 'flex-end' }}>
+          <Text style={{ fontSize: 70, fontWeight: 'bold', color: 'black',}}>
+    {current?.temp_c}
+  </Text>
             <Text h1 size={34} height={80} weight='600' spacing={0.1}>°C</Text>
           </Block>
-          <Block flex={1} column>
-            <Text caption>Humidity</Text>
+          </Block>
+          
+          <Block flex={1} column style={{alignItems:'center'}}>
+            <Text caption >Soil Moisture</Text>
             <Text size={40} height={80} color={'#0AC4BA'}>91%</Text>
-
-            {/* <MyLineChart/> */}
-
           </Block>
         </Block> 
 
