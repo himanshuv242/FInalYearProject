@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
+  Alert
 } from 'react-native';
 import { Button } from '../components/Main';
 import * as theme from '../constants/Main/theme';
@@ -15,7 +16,10 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignUp = () => {
-    // handle sign up logic
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+        Alert.alert('Congratulations!', 'You are now part of our i-Kissan family.');
   };
 
   return (
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
-    
+    color:'black'
   },
   button: {
     backgroundColor: 'blue',

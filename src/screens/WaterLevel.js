@@ -20,15 +20,15 @@ const WaterLevel = () => {
         await axios.get(`http://${savedIPAddress}/watersensor`).then(response => {
           // console.log(response.data);
           const stringifiedData = JSON.stringify(response.data);
-          if (selectedLevel === 'High' && stringifiedData >= 500) {
+          if (selectedLevel === 'High' && stringifiedData >= 300) {
             console.log("Inside High");
             motor();
             setSelectedLevel(null);
-          } else if (selectedLevel === 'Medium' && stringifiedData >= 300) {
+          } else if (selectedLevel === 'Medium' && stringifiedData >= 200) {
             console.log("Inside Medium");
             motor();
             setSelectedLevel(null);
-          } else if (selectedLevel === 'Low' && stringifiedData>=150) {
+          } else if (selectedLevel === 'Low' && stringifiedData>=100) {
             console.log("Inside Low");
             motor();
             setSelectedLevel(null);

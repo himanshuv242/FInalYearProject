@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
   Text,
   View,
@@ -6,15 +6,17 @@ import {
   StyleSheet,
   TextInput,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from 'react-native';
 import Fonts from '../assets/fonts';
 import SvgIcon from '../assets/images/SvgIcon';
 
 
 const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('');
 
   const handleSubmit = ()=>{
+    setEmail('');
     Alert.alert('Password sent successfully!', 'Please check your mail for new password and try login again.');
   }
 
