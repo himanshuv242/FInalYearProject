@@ -70,11 +70,11 @@ const PowerSupplyScreen = () => {
         </Text>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Supplied Voltage:</Text>
-          <Text style={styles.detailValue}>12V</Text>
+          <Text style={styles.detailValue}>220V</Text>
         </View>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Supplied Current:</Text>
-          <Text style={styles.detailValue}>5A</Text>
+          <Text style={styles.detailValue}>14mA</Text>
         </View>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Battery Status:</Text>
