@@ -293,7 +293,7 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
+                onPress={() => navigation.navigate('Electricity')}
               >
                 <Block center middle style={styles.button}>
                   <ElectricityIcon size={38} />

@@ -13,6 +13,7 @@ import CropManual from './src/screens/CropManual';
 import MotorTimer from './src/screens/MotorTimer';
 import Weather from './src/screens/Weather';
 import ForgotPasswordScreen from './src/screens/ForgotPassword';
+import PowerSupplyScreen from './src/screens/PowerSupply';
 
 
 
@@ -52,6 +53,7 @@ const App = () => {
         <Stack.Screen name="Weather Forecasting" component={Weather}  />
         <Stack.Screen name="Motor Timer" component={MotorTimer}  />
         <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen}  />
+        <Stack.Screen name="Electricity" component={PowerSupplyScreen}  />
       </Stack.Navigator>
     </NavigationContainer>;
 
@@ -60,6 +62,7 @@ const App = () => {
     // <MyComponent/>
     // <CropManual/>
     // <Weather/>
+    // <PowerSupplyScreen/>
   
 };
 
