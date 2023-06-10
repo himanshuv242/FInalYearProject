@@ -76,14 +76,14 @@ const PowerSupplyScreen = () => {
           <Text style={styles.detailLabel}>Supplied Current:</Text>
           <Text style={styles.detailValue}>14mA</Text>
         </View>
-        <View style={styles.detailItem}>
+        {isSolarSupply?<View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Battery Status:</Text>
           <Text style={styles.detailValue}>80%</Text>
-        </View>
-        <View style={styles.detailItem}>
+        </View>:''}
+        {isSolarSupply?<View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Charging Status:</Text>
           <Text style={styles.detailValue}>Connected</Text>
-        </View>
+        </View>:''}
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Efficiency:</Text>
           <Text style={styles.detailValue}>90%</Text>
