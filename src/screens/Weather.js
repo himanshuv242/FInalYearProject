@@ -9,12 +9,38 @@ import { getData, storeData } from '../../utils/asyncStorage';
 import { debounce } from 'lodash';
 import theme from '../../theme'
 import { fetchLocations, fetchWeatherForecast } from '../../api/weather';
+import PushNotification from 'react-native-push-notification';
 
 export default function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weather, setWeather] = useState({});
+
+  const checkRainyWeather = (forecast) => {
+    const rainyDays = forecast.forecastday.filter((day) => {
+      // Adjust the condition according to your weather data
+      return day.day.condition.text.includes('rain');
+    });
+  
+    if (rainyDays.length > 0) {
+      // Send local notification
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'Upcoming Rain',
+        message: 'Rain in the coming week. Kindly pay attention to level of irrigation.',
+      });
+    }
+    else {
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'No upcoming rain in the week',
+        message: 'No rain in the coming week. Kindly pay attention to level of irrigation.',
+      });
+    }
+  };
+
+  
 
   const handleSearch = (search) => {
     if (search && search.length > 2) {
@@ -40,7 +66,17 @@ export default function HomeScreen() {
 
   useEffect(() => {
     fetchMyWeatherData();
+    
   }, []);
+
+  useEffect(() => {
+    // Fetch the weather forecast data and store it in the 'weather' state
+  
+    // Check for rainy weather
+    if (weather.forecast && weather.forecast.forecastday) {
+      checkRainyWeather(weather.forecast);
+    }
+  }, [weather]);
 
   const fetchMyWeatherData = async () => {
     let myCity = await getData('city');

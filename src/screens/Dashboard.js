@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SoundPlayer from 'react-native-sound-player';
 import { fetchWeatherForecast } from '../../api/weather';
 import { getData} from '../../utils/asyncStorage';
+import PushNotification from 'react-native-push-notification';
  
 
 const Dashboard = ({ navigation }) => {
@@ -50,7 +51,7 @@ const Dashboard = ({ navigation }) => {
   const [isMotorOn, setIsMotorOn] = useState('');
   const [isLightOn, setIsLightOn] = useState('');
   const [weather, setWeather] = useState({});
-  const [moistureLevel, setMoistureLevel] = useState('');
+  const [moistureLevel, setMoistureLevel] = useState('73');
   const {current } = weather;
 
   //fetch current city weather data
@@ -62,7 +63,7 @@ const Dashboard = ({ navigation }) => {
     }
     fetchWeatherForecast({
       cityName,
-      days: '1',
+      days: '7',
     }).then((data) => {
       console.log(data);
       setWeather(data);
@@ -181,7 +182,38 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
+  //Check for upcoming rainy day
+  const checkRainyWeather = (forecast) => {
+    const rainyDays = forecast.forecastday.filter((day) => {
+      // Adjust the condition according to your weather data
+      return day.day.condition.text.includes('rain');
+    });
+  
+    if (rainyDays.length > 0) {
+      // Send local notification
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'Upcoming Rain',
+        message: 'There is a possibility of rain in the coming week. Please irrigate your farm accordingly.',
+      });
+    }
+    else {
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'No upcoming rain in the week',
+        message: 'There is a possibility of no rain in the coming week. Please irrigate your farm accordingly.',
+      });
+    }
+  };
 
+  useEffect(() => {
+    // Fetch the weather forecast data and store it in the 'weather' state
+  
+    // Check for rainy weather
+    if (weather.forecast && weather.forecast.forecastday) {
+      checkRainyWeather(weather.forecast);
+    }
+  }, [weather]);
 
 
 
