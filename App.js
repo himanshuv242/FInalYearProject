@@ -10,7 +10,11 @@ import * as theme from './src/constants/Main/theme';
 import Dashboard from './src/screens/Dashboard';
 import Splash from './src/screens/Splash';
 import CropManual from './src/screens/CropManual';
+import MotorTimer from './src/screens/MotorTimer';
 import Weather from './src/screens/Weather';
+import ForgotPasswordScreen from './src/screens/ForgotPassword';
+import PowerSupplyScreen from './src/screens/PowerSupply';
+
 
 
 const Stack = createStackNavigator();
@@ -47,6 +51,9 @@ const App = () => {
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="Crop Manual" component={CropManual} />
         <Stack.Screen name="Weather Forecasting" component={Weather}  />
+        <Stack.Screen name="Motor Timer" component={MotorTimer}  />
+        <Stack.Screen name="Forgot Password" component={ForgotPasswordScreen}  />
+        <Stack.Screen name="Electricity" component={PowerSupplyScreen}  />
       </Stack.Navigator>
     </NavigationContainer>;
 
@@ -55,6 +62,7 @@ const App = () => {
     // <MyComponent/>
     // <CropManual/>
     // <Weather/>
+    // <PowerSupplyScreen/>
   
 };
 

@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity,Image,Alert, } from 'react-native';
+import React, { useState,useEffect } from 'react'
+import { ScrollView, StyleSheet, TouchableOpacity,Image,Alert, Switch } from 'react-native';
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SoundPlayer from 'react-native-sound-player';
+import { fetchWeatherForecast } from '../../api/weather';
+import { getData} from '../../utils/asyncStorage';
+import PushNotification from 'react-native-push-notification';
  
 
 const Dashboard = ({ navigation }) => {
@@ -45,8 +49,62 @@ const Dashboard = ({ navigation }) => {
   );
 
   const [isMotorOn, setIsMotorOn] = useState('');
+  const [isLightOn, setIsLightOn] = useState('');
+  const [weather, setWeather] = useState({});
+  const [moistureLevel, setMoistureLevel] = useState('73');
+  const {current } = weather;
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false);
 
-  const fetchData = async () => {
+
+  //fetch current city weather data
+  const fetchMyWeatherData = async () => {
+    let myCity = await getData('city');
+    let cityName = 'Srinagar';
+    if (myCity) {
+      cityName = myCity;
+    }
+    fetchWeatherForecast({
+      cityName,
+      days: '7',
+    }).then((data) => {
+      console.log(data);
+      setWeather(data);
+    });
+  };
+  useEffect(() => {
+    fetchMyWeatherData();
+  }, []);
+
+  // for fetching moisture level every .5 second
+  useEffect(() => {
+
+    const fetchData = async () => {
+      try {
+        const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+        await axios.get(`http://${savedIPAddress}/soilsensor`).then(response => {
+          // console.log(response.data);
+          const stringifiedData = JSON.stringify(response.data);
+          const value= Math.round(((1024-stringifiedData)/1024)*100);
+
+          setMoistureLevel(value);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      } catch (error) {
+        console.error('Failed to send API request', error);
+      }
+    };
+
+    const interval = setInterval(fetchData, 500); // Fetch data every .5 seconds
+    // console.log(waterLevel);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
+  
+//API call for switching motor
+  const motor = async () => {
     try {
       const savedIPAddress = await AsyncStorage.getItem('ipAddress');
       // console.log(`IP address is ${savedIPAddress}`);
@@ -55,8 +113,10 @@ const Dashboard = ({ navigation }) => {
         // console.log(response.data);
         const stringifiedData = JSON.stringify(response.data);
         if (stringifiedData === '"LED ON"') {
+          SoundPlayer.playSoundFile('on', 'mp3');
           setIsMotorOn('LED OFF');
         } else if (stringifiedData === '"LED OFF"') {
+          SoundPlayer.playSoundFile('off', 'mp3');
           setIsMotorOn('LED ON');
         }
       })
@@ -65,7 +125,7 @@ const Dashboard = ({ navigation }) => {
         Alert.alert('Unable to connect!', 'Please check your connection to the module.');
       });
       // await axios.get('http://192.168.170.177/led');
-      console.log('API request sent successfully');
+      console.log('Motor switched successfully');
       // Handle any necessary UI updates or actions
     } catch (error) {
       console.error('Failed to send API request', error);
@@ -73,7 +133,36 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-  const getButtonStyle = () => {
+//API call for switching light
+  const light = async () => {
+    try {
+      const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+      // console.log(`IP address is ${savedIPAddress}`);
+      
+      await axios.get(`http://${savedIPAddress}/light`).then(response => {
+        // console.log(response.data);
+        const stringifiedData = JSON.stringify(response.data);
+        if (stringifiedData === '"Light ON"') {
+          setIsLightOn('Light OFF');
+        } else if (stringifiedData === '"Light OFF"') {
+          setIsLightOn('Light ON');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+      });
+      // await axios.get('http://192.168.170.177/led');
+      console.log('Light switched successfully');
+      // Handle any necessary UI updates or actions
+    } catch (error) {
+      console.error('Failed to send API request', error);
+      // Handle any errors that occurred during the request
+    }
+  };
+
+//for setting motor button style as per switching status
+  const getMotorStyle = () => {
     // Conditionally return the style based on the LED status
     if (isMotorOn === 'LED ON') {
       return styles.button;
@@ -84,26 +173,99 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
+  //for setting light button style as per switching status
+  const getLightStyle = () => {
+    // Conditionally return the style based on the LED status
+    if (isLightOn === 'Light ON') {
+      return styles.button;
+    } else if (isLightOn === 'Light OFF') {
+      return styles.buttonOn;
+    } else {
+      return styles.button;
+    }
+  };
+
+  //Check for upcoming rainy day
+  const checkRainyWeather = (forecast) => {
+    const rainyDays = forecast.forecastday.filter((day) => {
+      // Adjust the condition according to your weather data
+      return day.day.condition.text.includes('rain');
+    });
+  
+    if (rainyDays.length > 0) {
+      // Send local notification
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'Upcoming Rain',
+        message: 'There is a possibility of rain in the coming week. Please irrigate your farm accordingly.',
+      });
+    }
+    else {
+      PushNotification.localNotification({
+        channelId: 'my-channel-id', // Replace with your desired channel ID
+        title: 'No upcoming rain in the week',
+        message: 'There is a possibility of no rain in the coming week. Please irrigate your farm accordingly.',
+      });
+    }
+  };
+   // Check for rainy weather
+  useEffect(() => {
+    if (weather.forecast && weather.forecast.forecastday) {
+      checkRainyWeather(weather.forecast);
+    }
+  }, [weather]);
+
+  const playSound = () => {
+    setIsSwitchOn(true);
+    setIsPlaying(true);
+    if(!isSwitchOn)
+    {
+      SoundPlayer.playSoundFile('tour', 'mp3');
+    }
+    setTimeout(() => {
+      setIsPlaying(false);
+      setIsSwitchOn(false);
+    }, 73000);
+
+};
+
 
 
   return (
       <Block style={styles.dashboard}>
-         <Block column style={{ marginVertical: theme.sizes.base }}>
+         <Block row style={{ marginTop: theme.sizes.base }}>
+         <Block column flex={1} >
           <Text welcome>Hi,</Text>
           <Text name>Himanshu</Text>
         </Block>
+
+         <Block  style={{alignItems: 'flex-end' }}>
+           <Text welcome style={{fontSize:15, alignSelf:'center'}}>Audio Tour</Text>
+        <Switch
+          value={isSwitchOn}
+          onValueChange={playSound}
+          trackColor={{ false: '#D9D9D9', true: '#2DAF7D' }}
+          thumbColor={true ? '#FFFFFF' : '#FFFFFF'}
+          disabled={isPlaying}
+          style={{ opacity: (isPlaying)? 0.5 : 1 }}
+          />
+          </Block>
+        </Block>
         
-        <Block row style={{ paddingVertical: 10 }}>
-          <Block flex={1.5} row style={{ alignItems: 'flex-end', }}>
-            <Text h1>34</Text>
+        <Block row style={{ paddingVertical: 5 }}>
+        <Block flex={1} column>
+        {/* <Text caption >Srinagar</Text> */}
+          <Block flex={1.5} row style={{ alignItems: 'flex-end' }}>
+          <Text style={{ fontSize: 70, fontWeight: 'bold', color: 'black',}}>
+    {current?.temp_c}
+  </Text>
             <Text h1 size={34} height={80} weight='600' spacing={0.1}>°C</Text>
           </Block>
-          <Block flex={1} column>
-            <Text caption>Humidity</Text>
-            <Text size={40} height={80} color={'#0AC4BA'}>91%</Text>
-
-            {/* <MyLineChart/> */}
-
+          </Block>
+          
+          <Block flex={1} column style={{alignItems:'center'}}>
+            <Text caption >Soil Moisture</Text>
+            <Text size={40} height={80} color={'#0AC4BA'}>{moistureLevel}%</Text>
           </Block>
         </Block> 
 
@@ -112,9 +274,9 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings')}
+                onPress={light}
               >
-                <Block center middle style={styles.button}>
+                <Block center middle style={[styles.button, getLightStyle()]}>
                   <LightIcon size={38} />
                   <Text
                     button
@@ -159,9 +321,9 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={fetchData}
+                onPress={motor}
               >
-                <Block center middle style={[styles.button, getButtonStyle()]}>
+                <Block center middle style={[styles.button, getMotorStyle()]}>
                   <FanIcon size={38} />
                   <Text
                     button
@@ -176,7 +338,7 @@ const Dashboard = ({ navigation }) => {
             <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings', { name: 'wi-fi' })}
+                onPress={() => navigation.navigate('Motor Timer')}
               >
                 <Block center middle style={styles.button}>
                   <Timer size={38} />
@@ -191,7 +353,7 @@ const Dashboard = ({ navigation }) => {
               
               <TouchableOpacity
                 activeOpacity={0.5}
-                // onPress={() => navigation.navigate('DSettings', { name: 'electricity' })}
+                onPress={() => navigation.navigate('Electricity')}
               >
                 <Block center middle style={styles.button}>
                   <ElectricityIcon size={38} />

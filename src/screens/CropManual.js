@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   accordionContainer: {
-    backgroundColor: '#fff',
     marginBottom: 10,
     borderRadius: 8,
     overflow: 'hidden',
@@ -157,7 +156,7 @@ const styles = StyleSheet.create({
     height: 50,
     marginRight: 10,
     borderRadius: 10,
-    backgroundColor:"white",
+    backgroundColor:"#0E8388",
   },
   cropInfo: {
     flex: 1,

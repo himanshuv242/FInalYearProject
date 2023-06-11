@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -10,19 +10,15 @@ import {
   Modal,
 } from 'react-native';
 import * as theme from '../constants/Main/theme';
-import {Button} from '../components/Main';
+import { Button } from '../components/Main';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-export default class Welcome extends Component {
-  scrollX = new Animated.Value(0);
+const Welcome = ({ navigation, illustrations }) => {
+  const scrollX = new Animated.Value(0);
+  const [isShowTerm, setIsShowTerm] = useState(false);
 
-  state = {
-    isShowTerm: false,
-  };
-
-  renderIllustrations = () => {
-    const {illustrations} = this.props;
+  const renderIllustrations = () => {
     return (
       <Animated.FlatList
         horizontal
@@ -32,157 +28,101 @@ export default class Welcome extends Component {
         scrollEventThrottle={16}
         snapToAlignment="center"
         data={illustrations}
-        keyExtractor={(item, index) => `${item.id}`}
-        renderItem={({item}) => (
+        keyExtractor={(item) => `${item.id}`}
+        renderItem={({ item }) => (
           <Image
             source={item.source}
             resizeMode="cover"
-            style={{width: width, height: height / 2, overflow: 'visible'}}
+            style={{ width: width, height: height / 2, overflow: 'visible' }}
           />
         )}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: this.scrollX}}}],
-          {useNativeDriver: true},
-        )}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+          useNativeDriver: true,
+        })}
       />
     );
   };
 
-  renderDots = () => {
-    const {illustrations} = this.props;
-    const dotPosition = Animated.divide(this.scrollX, width);
+  const renderDots = () => {
+    const dotPosition = Animated.divide(scrollX, width);
     return (
-      <View
-        style={[styles.dotContainer, styles.row, {justifyContent: 'center'}]}>
+      <View style={[styles.dotContainer, styles.row, { justifyContent: 'center' }]}>
         {illustrations.map((item, index) => {
           const opacity = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
             outputRange: [0.3, 1, 0.3],
             extrapolate: 'clamp',
           });
-          return <Animated.View key={index} style={[styles.dots, {opacity}]} />;
+          return <Animated.View key={index} style={[styles.dots, { opacity }]} />;
         })}
       </View>
     );
   };
 
-  renderTermServiceModal = () => {
+  const renderTermServiceModal = () => {
     return (
-      <Modal visible={this.state.isShowTerm} animationType="slide">
+      <Modal visible={isShowTerm} animationType="slide">
         <View style={[styles.flex, styles.modal]}>
-          <Text
-            style={{
-              fontSize: theme.fonts.h1,
-              color: theme.colors.gray,
-              marginBottom: 80,
-
-            }}>
-            Choose your Language
-          </Text>
+          <Text style={styles.modalTitle}>Choose your Language</Text>
           <ScrollView>
-            <Text
-              style={{
-                color: theme.colors.gray,
-                fontSize: theme.fonts.h2,
-                marginVertical: 20,
-              }}>
-              1. English
-            </Text>
-            <Text
-              style={{
-                color: theme.colors.gray,
-                fontSize: theme.fonts.h2,
-                marginVertical: 20,
-              }}>
-              2. Hindi
-            </Text>
-            <Text
-              style={{
-                color: theme.colors.gray,
-                fontSize: theme.fonts.h2,
-                marginVertical: 20,
-              }}>
-              3. Urdu
-            </Text>
-            
+            <Text style={styles.modalText}>हिंदी</Text>
+            <Text style={styles.modalText}>اردو</Text>
+            <Text style={styles.modalText}>English</Text>
           </ScrollView>
           <View>
-            <Button gradient onPress={() => this.setState({isShowTerm: false})}>
-              <Text style={{color: theme.colors.white, textAlign: 'center'}}>
-                I Understand
-              </Text>
+            <Button gradient onPress={() => setIsShowTerm(false)}>
+              <Text style={styles.modalButton}>I Understand</Text>
             </Button>
           </View>
         </View>
       </Modal>
     );
   };
-  
-  render() {
-    const {navigation} = this.props;
 
-    return (
-      <View style={[styles.container, styles.flex]}>
-        <View style={styles.header}>
-          <Text style={{color: theme.colors.black, fontSize: theme.fonts.h1}}>
-            Your Farm.
-            <Text style={{color: theme.colors.primary, fontWeight: 'bold'}}>
-              {'  '}Greener.
-            </Text>
-          </Text>
-          <Text
-            style={{
-              color: theme.colors.gray,
-              fontSize: theme.fonts.h2,
-            }}>
-            Enjoy the experience.
-          </Text>
+  return (
+    <View style={[styles.container, styles.flex]}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>
+          Your Farm.
+          <Text style={styles.headerTextBold}> Greener.</Text>
+        </Text>
+        <Text style={styles.subHeaderText}>Enjoy the experience.</Text>
+      </View>
+      <ScrollView>
+        <View style={styles.illustrations}>
+          {renderIllustrations()}
+          {renderDots()}
         </View>
-        <ScrollView>
-          <View style={styles.illustrations}>
-            {this.renderIllustrations()}
-            {this.renderDots()}
-          </View>
-          <View
-            style={[
-              styles.btnContainer,
-              {marginHorizontal: theme.sizes.padding * 2},
-            ]}>
-            <Button gradient onPress={() => navigation.navigate('Login')}>
-              <Text
-                style={{
-                  color: theme.colors.white,
-                  fontWeight: '500',
-                  textAlign: 'center',
-                }}>
-                Sign in
-              </Text>
-            </Button>
-            <Button shadow onPress={() => navigation.navigate('Signup')}>
-              <Text
-                style={{
+        <View style={[styles.btnContainer, { marginHorizontal: theme.sizes.padding * 2 }]}>
+          <Button gradient onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.buttonText}>Sign in</Text>
+          </Button>
+          <Button shadow onPress={() => navigation.navigate('Signup')}>
+            <Text style={{
                   textAlign: 'center',
                   color: theme.colors.gray
-                }}>
-                Sign Up
-              </Text>
-            </Button>
-            <Button onPress={() => this.setState({isShowTerm: true})}>
-              <Text
-                style={{
+                }}>Sign Up</Text>
+          </Button>
+          <Button onPress={() => setIsShowTerm(true)}>
+            <Text style={{
                   textAlign: 'center',
-                  color: theme.colors.gray,
-                }}>
-                Select Language
-              </Text>
-            </Button>
-          </View>
-          {this.renderTermServiceModal()}
-        </ScrollView>
-      </View>
-    );
-  }
-}
+                  color: theme.colors.gray
+                }}>भाषा चुने</Text>
+                <Text style={{
+                  textAlign: 'center',
+                  color: theme.colors.gray
+                }}>زبان منتخب کریں۔</Text>
+                <Text style={{
+                      textAlign: 'center',
+                      color: theme.colors.gray
+                    }}>Select Language</Text>
+          </Button>
+        </View>
+        {renderTermServiceModal()}
+      </ScrollView>
+    </View>
+  );
+};
 
 Welcome.defaultProps = {
   illustrations: [
@@ -213,17 +153,27 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 2,
-    paddingVertical:15,
+    paddingVertical: 15,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headerText: {
+    color: theme.colors.black,
+    fontSize: theme.fonts.h1,
+  },
+  headerTextBold: {
+    color: theme.colors.primary,
+    fontWeight: 'bold',
+  },
+  subHeaderText: {
+    color: theme.colors.gray,
+    fontSize: theme.fonts.h2,
+  },
   illustrations: {
     flex: 6,
-
   },
   btnContainer: {
     flex: 2,
- 
   },
   dotContainer: {
     position: 'absolute',
@@ -242,9 +192,28 @@ const styles = StyleSheet.create({
     height: height * 0.8,
     paddingVertical: theme.sizes.padding * 2,
     paddingHorizontal: theme.sizes.padding,
-    alignItems:'center'
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: theme.fonts.h1,
+    color: theme.colors.gray,
+    marginBottom: 80,
+  },
+  modalText: {
+    color: theme.colors.gray,
+    fontSize: theme.fonts.h2,
+    marginVertical: 20,
+    alignSelf:'center'
+  },
+  modalButton: {
+    color: theme.colors.white,
+    textAlign: 'center',
+  },
+  buttonText: {
+    color: theme.colors.white,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });
 
-// BUG: Cannot use package React-native-text-gradient
-// --> Error: Text string must be render in Text Component
+export default Welcome;

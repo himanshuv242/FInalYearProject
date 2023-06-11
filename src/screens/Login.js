@@ -15,7 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get('window');
 // const VALID_EMAIL = 'contact@react-ui-kit.com';
-const VALID_PASSWORD = 'subscribe';
+const VALID_PASSWORD = '2019bele024';
 
 const Login = () => {
   const [ipAddress, setIpAddress] = useState('');
@@ -101,7 +101,7 @@ Alert.alert('IP address required', 'Please enter an IP address to login.');
             </Text>
           )}
         </Button>
-        <Button onPress={() => navigation.navigate('Forgot')}>
+        <Button onPress={() => navigation.navigate('Forgot Password')}>
           <Text
             style={{
               color: theme.colors.gray,
