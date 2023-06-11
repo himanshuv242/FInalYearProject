@@ -14,6 +14,7 @@ import MotorTimer from './src/screens/MotorTimer';
 import Weather from './src/screens/Weather';
 import ForgotPasswordScreen from './src/screens/ForgotPassword';
 import PowerSupplyScreen from './src/screens/PowerSupply';
+import LanguageModal from './src/screens/LanguageModal';
 
 
 
@@ -63,6 +64,7 @@ const App = () => {
     // <CropManual/>
     // <Weather/>
     // <PowerSupplyScreen/>
+    // <LanguageModal/>
   
 };
 

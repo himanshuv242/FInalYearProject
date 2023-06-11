@@ -7,16 +7,25 @@ import {
   Dimensions,
   Animated,
   ScrollView,
-  Modal,
 } from 'react-native';
 import * as theme from '../constants/Main/theme';
 import { Button } from '../components/Main';
+import LanguageModal from './LanguageModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {translation} from '../utils';
 
 const { width, height } = Dimensions.get('window');
 
 const Welcome = ({ navigation, illustrations }) => {
   const scrollX = new Animated.Value(0);
-  const [isShowTerm, setIsShowTerm] = useState(false);
+  const [langModalVisible, setLangModalVisible] = useState(false);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  const saveSelectedLang = async index => {
+    await AsyncStorage.setItem('LANG', index + '');
+  };
+
+
 
   const renderIllustrations = () => {
     return (
@@ -59,34 +68,46 @@ const Welcome = ({ navigation, illustrations }) => {
     );
   };
 
-  const renderTermServiceModal = () => {
-    return (
-      <Modal visible={isShowTerm} animationType="slide">
-        <View style={[styles.flex, styles.modal]}>
-          <Text style={styles.modalTitle}>Choose your Language</Text>
-          <ScrollView>
-            <Text style={styles.modalText}>हिंदी</Text>
-            <Text style={styles.modalText}>اردو</Text>
-            <Text style={styles.modalText}>English</Text>
-          </ScrollView>
-          <View>
-            <Button gradient onPress={() => setIsShowTerm(false)}>
-              <Text style={styles.modalButton}>I Understand</Text>
-            </Button>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
+ 
 
   return (
     <View style={[styles.container, styles.flex]}>
       <View style={styles.header}>
         <Text style={styles.headerText}>
-          Your Farm.
-          <Text style={styles.headerTextBold}> Greener.</Text>
+        {selectedLang == 0
+          ? translation[0].English
+          : selectedLang == 1
+          ? translation[0].Tamil
+          : selectedLang == 2
+          ? translation[0].Hindi
+          : selectedLang == 3
+          ? translation[0].Punjabi
+          : selectedLang == 4
+          ? translation[0].Urdu
+          : null}
+          <Text style={styles.headerTextBold}> {selectedLang == 0
+          ? translation[1].English
+          : selectedLang == 1
+          ? translation[1].Tamil
+          : selectedLang == 2
+          ? translation[1].Hindi
+          : selectedLang == 3
+          ? translation[1].Punjabi
+          : selectedLang == 4
+          ? translation[1].Urdu
+          : null}</Text>
         </Text>
-        <Text style={styles.subHeaderText}>Enjoy the experience.</Text>
+        <Text style={styles.subHeaderText}>{selectedLang == 0
+          ? translation[2].English
+          : selectedLang == 1
+          ? translation[2].Tamil
+          : selectedLang == 2
+          ? translation[2].Hindi
+          : selectedLang == 3
+          ? translation[2].Punjabi
+          : selectedLang == 4
+          ? translation[2].Urdu
+          : null}</Text>
       </View>
       <ScrollView>
         <View style={styles.illustrations}>
@@ -95,15 +116,37 @@ const Welcome = ({ navigation, illustrations }) => {
         </View>
         <View style={[styles.btnContainer, { marginHorizontal: theme.sizes.padding * 2 }]}>
           <Button gradient onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.buttonText}>Sign in</Text>
+            <Text style={styles.buttonText}>{selectedLang == 0
+          ? translation[3].English
+          : selectedLang == 1
+          ? translation[3].Tamil
+          : selectedLang == 2
+          ? translation[3].Hindi
+          : selectedLang == 3
+          ? translation[3].Punjabi
+          : selectedLang == 4
+          ? translation[3].Urdu
+          : null}</Text>
           </Button>
           <Button shadow onPress={() => navigation.navigate('Signup')}>
             <Text style={{
                   textAlign: 'center',
                   color: theme.colors.gray
-                }}>Sign Up</Text>
+                }}>{selectedLang == 0
+                  ? translation[4].English
+                  : selectedLang == 1
+                  ? translation[4].Tamil
+                  : selectedLang == 2
+                  ? translation[4].Hindi
+                  : selectedLang == 3
+                  ? translation[4].Punjabi
+                  : selectedLang == 4
+                  ? translation[4].Urdu
+                  : null}</Text>
           </Button>
-          <Button onPress={() => setIsShowTerm(true)}>
+          <Button onPress={() => {
+          setLangModalVisible(!langModalVisible);
+        }}>
             <Text style={{
                   textAlign: 'center',
                   color: theme.colors.gray
@@ -118,7 +161,15 @@ const Welcome = ({ navigation, illustrations }) => {
                     }}>Select Language</Text>
           </Button>
         </View>
-        {renderTermServiceModal()}
+        {/* {LanguageModal()} */}
+        <LanguageModal
+        langModalVisible={langModalVisible}
+        setLangModalVisible={setLangModalVisible}
+        onSelectLang={x => {
+          setSelectedLang(x);
+          saveSelectedLang(x);
+        }}
+      />
       </ScrollView>
     </View>
   );
@@ -152,7 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    flex: 2,
+    flex: 2.5,
     paddingVertical: 15,
     justifyContent: 'center',
     alignItems: 'center',
@@ -203,7 +254,7 @@ const styles = StyleSheet.create({
     color: theme.colors.gray,
     fontSize: theme.fonts.h2,
     marginVertical: 20,
-    alignSelf:'center'
+    alignSelf:'center',
   },
   modalButton: {
     color: theme.colors.white,
@@ -214,6 +265,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
+  icon:{
+    width:24,
+    height:24
+  },
+  languageItem:{
+    flexDirection:'row'
+  }
 });
 
 export default Welcome;
