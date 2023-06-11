@@ -208,15 +208,12 @@ const [isPlaying, setIsPlaying] = useState(false);
       });
     }
   };
-
-  // useEffect(() => {
-  //   // Fetch the weather forecast data and store it in the 'weather' state
-  
-  //   // Check for rainy weather
-  //   if (weather.forecast && weather.forecast.forecastday) {
-  //     checkRainyWeather(weather.forecast);
-  //   }
-  // }, [weather]);
+   // Check for rainy weather
+  useEffect(() => {
+    if (weather.forecast && weather.forecast.forecastday) {
+      checkRainyWeather(weather.forecast);
+    }
+  }, [weather]);
 
   const playSound = () => {
     setIsSwitchOn(true);
