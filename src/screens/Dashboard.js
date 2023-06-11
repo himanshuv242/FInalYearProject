@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity,Image,Alert, } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity,Image,Alert, Switch } from 'react-native';
 import {Block, Text} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
@@ -53,6 +53,9 @@ const Dashboard = ({ navigation }) => {
   const [weather, setWeather] = useState({});
   const [moistureLevel, setMoistureLevel] = useState('73');
   const {current } = weather;
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+const [isPlaying, setIsPlaying] = useState(false);
+
 
   //fetch current city weather data
   const fetchMyWeatherData = async () => {
@@ -206,22 +209,50 @@ const Dashboard = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    // Fetch the weather forecast data and store it in the 'weather' state
+  // useEffect(() => {
+  //   // Fetch the weather forecast data and store it in the 'weather' state
   
-    // Check for rainy weather
-    if (weather.forecast && weather.forecast.forecastday) {
-      checkRainyWeather(weather.forecast);
+  //   // Check for rainy weather
+  //   if (weather.forecast && weather.forecast.forecastday) {
+  //     checkRainyWeather(weather.forecast);
+  //   }
+  // }, [weather]);
+
+  const playSound = () => {
+    setIsSwitchOn(true);
+    setIsPlaying(true);
+    if(!isSwitchOn)
+    {
+      SoundPlayer.playSoundFile('tour', 'mp3');
     }
-  }, [weather]);
+    setTimeout(() => {
+      setIsPlaying(false);
+      setIsSwitchOn(false);
+    }, 73000);
+
+};
 
 
 
   return (
       <Block style={styles.dashboard}>
-         <Block column style={{ marginTop: theme.sizes.base }}>
+         <Block row style={{ marginTop: theme.sizes.base }}>
+         <Block column flex={1} >
           <Text welcome>Hi,</Text>
           <Text name>Himanshu</Text>
+        </Block>
+
+         <Block  style={{alignItems: 'flex-end' }}>
+           <Text welcome style={{fontSize:15, alignSelf:'center'}}>Audio Tour</Text>
+        <Switch
+          value={isSwitchOn}
+          onValueChange={playSound}
+          trackColor={{ false: '#D9D9D9', true: '#2DAF7D' }}
+          thumbColor={true ? '#FFFFFF' : '#FFFFFF'}
+          disabled={isPlaying}
+          style={{ opacity: (isPlaying)? 0.5 : 1 }}
+          />
+          </Block>
         </Block>
         
         <Block row style={{ paddingVertical: 5 }}>
