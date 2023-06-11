@@ -55,6 +55,7 @@ const Dashboard = ({ navigation }) => {
   const {current } = weather;
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 const [isPlaying, setIsPlaying] = useState(false);
+const[isAddress,setIsAddress]=useState('');
 
 
   //fetch current city weather data
@@ -71,6 +72,11 @@ const [isPlaying, setIsPlaying] = useState(false);
       console.log(data);
       setWeather(data);
     });
+
+    const savedIPAddress = await AsyncStorage.getItem('ipAddress');
+    console.log('inside fetch my weather data');
+    console.log(savedIPAddress);
+    setIsAddress(savedIPAddress);
   };
   useEffect(() => {
     fetchMyWeatherData();
@@ -236,7 +242,7 @@ const [isPlaying, setIsPlaying] = useState(false);
          <Block row style={{ marginTop: theme.sizes.base }}>
          <Block column flex={1} >
           <Text welcome>Hi,</Text>
-          <Text name>Himanshu</Text>
+          <Text name>{isAddress}</Text>
         </Block>
 
          <Block  style={{alignItems: 'flex-end' }}>
