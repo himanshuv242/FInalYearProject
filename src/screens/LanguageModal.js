@@ -19,7 +19,7 @@ import {
     const [selectedLang, setSelectedLang] = useState(0);
     const [languages, setLangauges] = useState([
       {name: 'English', selected: true},
-      {name: 'தமிழ்', selected: false},
+      {name: 'తెలుగు', selected: false},
       {name: 'हिन्दी', selected: false},
       {name: 'ਪੰਜਾਬੀ', selected: false},
       {name: 'اردو', selected: false},

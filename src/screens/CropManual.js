@@ -2,8 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, ScrollView , LayoutAnimation} from 'react-native';
 import cropData from '../cropData';
 import { Table, Row, Rows } from 'react-native-table-component';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {translation} from '../utils';
+
 const YourComponent = () => {
   const [activeAccordion, setActiveAccordion] = useState(null);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(()=>{
+    getLang();
+  },[])
+
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
 
   const toggleAccordion = (index) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -86,7 +98,17 @@ const YourComponent = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Know more about your crop :)</Text>
+      <Text style={styles.heading}>{selectedLang == 0
+        ? translation[63].English
+        : selectedLang == 1
+        ? translation[63].Telugu
+        : selectedLang == 2
+        ? translation[63].Hindi
+        : selectedLang == 3
+        ? translation[63].Punjabi
+        : selectedLang == 4
+        ? translation[63].Urdu
+        : null} :)</Text>
       <ScrollView>
         {crops.map((crop, index) => (
           <View key={index} style={[styles.accordionContainer]}>

@@ -15,7 +15,7 @@ import * as theme from '../constants/Dashboard/theme';
 import axios from 'axios';
 import SoundPlayer from 'react-native-sound-player';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {translation} from '../utils';
 
 
 const screen = Dimensions.get("window");
@@ -105,6 +105,16 @@ const App = () => {
   const [inputSeconds, setInputSeconds] = useState("15");
   const [isMotorOn, setIsMotorOn] = useState('');
   const [waterLevel, setWaterLevel] = useState('');
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(()=>{
+    getLang();
+  },[])
+
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
+
 
   let interval = null;
 
@@ -166,7 +176,27 @@ const App = () => {
     }
     else
     {
-      Alert.alert('Motor status unknown!', 'Please check your motor status by pressing below motor button.');
+      Alert.alert(`${selectedLang == 0
+        ? translation[48].English
+        : selectedLang == 1
+        ? translation[48].Telugu
+        : selectedLang == 2
+        ? translation[48].Hindi
+        : selectedLang == 3
+        ? translation[48].Punjabi
+        : selectedLang == 4
+        ? translation[48].Urdu
+        : null}`, `${selectedLang == 0
+          ? translation[49].English
+          : selectedLang == 1
+          ? translation[49].Telugu
+          : selectedLang == 2
+          ? translation[49].Hindi
+          : selectedLang == 3
+          ? translation[49].Punjabi
+          : selectedLang == 4
+          ? translation[49].Urdu
+          : null}`);
     }
     
   };
@@ -197,7 +227,27 @@ const App = () => {
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+        Alert.alert(`${selectedLang == 0
+          ? translation[23].English
+          : selectedLang == 1
+          ? translation[23].Telugu
+          : selectedLang == 2
+          ? translation[23].Hindi
+          : selectedLang == 3
+          ? translation[23].Punjabi
+          : selectedLang == 4
+          ? translation[23].Urdu
+          : null}`, `${selectedLang == 0
+            ? translation[24].English
+            : selectedLang == 1
+            ? translation[24].Telugu
+            : selectedLang == 2
+            ? translation[24].Hindi
+            : selectedLang == 3
+            ? translation[24].Punjabi
+            : selectedLang == 4
+            ? translation[24].Urdu
+            : null}`);
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('API request sent successfully');
@@ -239,27 +289,67 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.waterLevelText}>Water Level: {waterLevel}</Text>
+      <Text style={styles.waterLevelText}>{selectedLang == 0
+          ? translation[50].English
+          : selectedLang == 1
+          ? translation[50].Telugu
+          : selectedLang == 2
+          ? translation[50].Hindi
+          : selectedLang == 3
+          ? translation[50].Punjabi
+          : selectedLang == 4
+          ? translation[50].Urdu
+          : null}: {waterLevel}</Text>
       <StatusBar barStyle="light-content" />
       {isRunning ? (
         <Text style={styles.timerText}>{`${hours}:${minutes}:${seconds}`}</Text>
       ) : (
         <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Hours:</Text>
+          <Text style={styles.inputLabel}>{selectedLang == 0
+          ? translation[51].English
+          : selectedLang == 1
+          ? translation[51].Telugu
+          : selectedLang == 2
+          ? translation[51].Hindi
+          : selectedLang == 3
+          ? translation[51].Punjabi
+          : selectedLang == 4
+          ? translation[51].Urdu
+          : null}:</Text>
           <TextInput
             style={styles.inputField}
             value={inputHours}
             onChangeText={setInputHours}
             keyboardType="numeric"
           />
-          <Text style={styles.inputLabel}>Minutes:</Text>
+          <Text style={styles.inputLabel}>{selectedLang == 0
+          ? translation[52].English
+          : selectedLang == 1
+          ? translation[52].Telugu
+          : selectedLang == 2
+          ? translation[52].Hindi
+          : selectedLang == 3
+          ? translation[52].Punjabi
+          : selectedLang == 4
+          ? translation[52].Urdu
+          : null}:</Text>
           <TextInput
             style={styles.inputField}
             value={inputMinutes}
             onChangeText={setInputMinutes}
             keyboardType="numeric"
           />
-          <Text style={styles.inputLabel}>Seconds:</Text>
+          <Text style={styles.inputLabel}>{selectedLang == 0
+          ? translation[53].English
+          : selectedLang == 1
+          ? translation[53].Telugu
+          : selectedLang == 2
+          ? translation[53].Hindi
+          : selectedLang == 3
+          ? translation[53].Punjabi
+          : selectedLang == 4
+          ? translation[53].Urdu
+          : null}:</Text>
           <TextInput
             style={styles.inputField}
             value={inputSeconds}
@@ -273,7 +363,17 @@ const App = () => {
           onPress={stop}
           style={[styles.button, styles.buttonStop]}
         >
-          <Text style={[styles.buttonText, styles.buttonTextStop]}>Stop</Text>
+          <Text style={[styles.buttonText, styles.buttonTextStop]}>{selectedLang == 0
+          ? translation[54].English
+          : selectedLang == 1
+          ? translation[54].Telugu
+          : selectedLang == 2
+          ? translation[54].Hindi
+          : selectedLang == 3
+          ? translation[54].Punjabi
+          : selectedLang == 4
+          ? translation[54].Urdu
+          : null}</Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
@@ -281,7 +381,17 @@ const App = () => {
           style={[styles.button, { opacity: (isStartButtonDisabled || isMotorOn==='LED OFF')? 0.5 : 1 }]}
           disabled={isStartButtonDisabled || isMotorOn==='LED OFF'}
         >
-          <Text style={styles.buttonText}>Start</Text>
+          <Text style={styles.buttonText}>{selectedLang == 0
+          ? translation[55].English
+          : selectedLang == 1
+          ? translation[55].Telugu
+          : selectedLang == 2
+          ? translation[55].Hindi
+          : selectedLang == 3
+          ? translation[55].Punjabi
+          : selectedLang == 4
+          ? translation[55].Urdu
+          : null}</Text>
         </TouchableOpacity>
       )}
 
@@ -295,7 +405,17 @@ const App = () => {
                     button
                     style={{ marginTop: theme.sizes.base * 0.5, color:'black', fontWeight:'bold' }}
                   >
-                    Motor
+                    {selectedLang == 0
+          ? translation[56].English
+          : selectedLang == 1
+          ? translation[56].Telugu
+          : selectedLang == 2
+          ? translation[56].Hindi
+          : selectedLang == 3
+          ? translation[56].Punjabi
+          : selectedLang == 4
+          ? translation[56].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>

@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import TimerComponent from './Timer';
 import WaterLevelComponent from './WaterLevel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {translation} from '../utils';
 
 const ContainerComponent = () => {
   const [isTimerActive, setIsTimerActive] = useState(true);
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(()=>{
+    getLang();
+  },[])
+
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
 
   const toggleComponent = () => {
     setIsTimerActive(!isTimerActive);
@@ -21,7 +32,27 @@ const ContainerComponent = () => {
         onPress={toggleComponent}
       >
         <Text style={styles.slideButtonText}>
-          {isTimerActive ? 'Water Level' : 'Timer'}
+          {isTimerActive ? `${selectedLang == 0
+          ? translation[50].English
+          : selectedLang == 1
+          ? translation[50].Telugu
+          : selectedLang == 2
+          ? translation[50].Hindi
+          : selectedLang == 3
+          ? translation[50].Punjabi
+          : selectedLang == 4
+          ? translation[50].Urdu
+          : null}` : `${selectedLang == 0
+            ? translation[62].English
+            : selectedLang == 1
+            ? translation[62].Telugu
+            : selectedLang == 2
+            ? translation[62].Hindi
+            : selectedLang == 3
+            ? translation[62].Punjabi
+            : selectedLang == 4
+            ? translation[62].Urdu
+            : null}`}
         </Text>
       </TouchableOpacity>
     </View>

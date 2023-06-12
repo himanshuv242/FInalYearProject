@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Block} from '../components/Dashboard/Index';
 import * as theme from '../constants/Dashboard/theme';
 import SoundPlayer from 'react-native-sound-player';
+import {translation} from '../utils';
 
 const WaterLevel = () => {
   const [waterLevel, setWaterLevel] = useState('');
@@ -12,6 +13,16 @@ const WaterLevel = () => {
   const [selectedLevel, setSelectedLevel] = useState('');
   const [isSetButtonDisabled, setIsSetButtonDisabled] = useState(true);
   const [inputStatus, setInputStatus] = useState('');
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(()=>{
+    getLang();
+  },[])
+
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,7 +81,27 @@ const WaterLevel = () => {
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+        Alert.alert(`${selectedLang == 0
+          ? translation[23].English
+          : selectedLang == 1
+          ? translation[23].Telugu
+          : selectedLang == 2
+          ? translation[23].Hindi
+          : selectedLang == 3
+          ? translation[23].Punjabi
+          : selectedLang == 4
+          ? translation[23].Urdu
+          : null}`, `${selectedLang == 0
+            ? translation[24].English
+            : selectedLang == 1
+            ? translation[24].Telugu
+            : selectedLang == 2
+            ? translation[24].Hindi
+            : selectedLang == 3
+            ? translation[24].Punjabi
+            : selectedLang == 4
+            ? translation[24].Urdu
+            : null}`);
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('Motor switched successfully');
@@ -96,7 +127,27 @@ const WaterLevel = () => {
     }
     else
     {
-      Alert.alert('Motor status unknown!', 'Please check your motor status by pressing below motor button.');
+      Alert.alert(`${selectedLang == 0
+        ? translation[48].English
+        : selectedLang == 1
+        ? translation[48].Telugu
+        : selectedLang == 2
+        ? translation[48].Hindi
+        : selectedLang == 3
+        ? translation[48].Punjabi
+        : selectedLang == 4
+        ? translation[48].Urdu
+        : null}`, `${selectedLang == 0
+          ? translation[49].English
+          : selectedLang == 1
+          ? translation[49].Telugu
+          : selectedLang == 2
+          ? translation[49].Hindi
+          : selectedLang == 3
+          ? translation[49].Punjabi
+          : selectedLang == 4
+          ? translation[49].Urdu
+          : null}`);
     }
   };
 
@@ -128,7 +179,17 @@ const WaterLevel = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.waterLevelText}>Water Level: {waterLevel}</Text>
+      <Text style={styles.waterLevelText}>{selectedLang == 0
+          ? translation[50].English
+          : selectedLang == 1
+          ? translation[50].Telugu
+          : selectedLang == 2
+          ? translation[50].Hindi
+          : selectedLang == 3
+          ? translation[50].Punjabi
+          : selectedLang == 4
+          ? translation[50].Urdu
+          : null}: {waterLevel}</Text>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -139,7 +200,17 @@ const WaterLevel = () => {
           onPress={() => handleSetWaterLevel('High')}
           disabled={ isMotorOn==='LED OFF'}
         >
-          <Text style={styles.levelButtonText}>High</Text>
+          <Text style={styles.levelButtonText}>{selectedLang == 0
+          ? translation[58].English
+          : selectedLang == 1
+          ? translation[58].Telugu
+          : selectedLang == 2
+          ? translation[58].Hindi
+          : selectedLang == 3
+          ? translation[58].Punjabi
+          : selectedLang == 4
+          ? translation[58].Urdu
+          : null}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -150,7 +221,17 @@ const WaterLevel = () => {
           onPress={() => handleSetWaterLevel('Medium')}
           disabled={ isMotorOn==='LED OFF'}
         >
-          <Text style={styles.levelButtonText}>Medium</Text>
+          <Text style={styles.levelButtonText}>{selectedLang == 0
+          ? translation[59].English
+          : selectedLang == 1
+          ? translation[59].Telugu
+          : selectedLang == 2
+          ? translation[59].Hindi
+          : selectedLang == 3
+          ? translation[59].Punjabi
+          : selectedLang == 4
+          ? translation[59].Urdu
+          : null}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -161,7 +242,17 @@ const WaterLevel = () => {
           onPress={() => handleSetWaterLevel('Low')}
           disabled={ isMotorOn==='LED OFF'}
         >
-          <Text style={styles.levelButtonText}>Low</Text>
+          <Text style={styles.levelButtonText}>{selectedLang == 0
+          ? translation[60].English
+          : selectedLang == 1
+          ? translation[60].Telugu
+          : selectedLang == 2
+          ? translation[60].Hindi
+          : selectedLang == 3
+          ? translation[60].Punjabi
+          : selectedLang == 4
+          ? translation[60].Urdu
+          : null}</Text>
         </TouchableOpacity>
       </View>
 
@@ -176,7 +267,17 @@ const WaterLevel = () => {
         onPress={handleSetButtonClick}
         disabled={isSetButtonDisabled || isMotorOn==='LED OFF'}
       >
-        <Text style={styles.actionButtonText}>Set</Text>
+        <Text style={styles.actionButtonText}>{selectedLang == 0
+          ? translation[61].English
+          : selectedLang == 1
+          ? translation[61].Telugu
+          : selectedLang == 2
+          ? translation[61].Hindi
+          : selectedLang == 3
+          ? translation[61].Punjabi
+          : selectedLang == 4
+          ? translation[61].Urdu
+          : null}</Text>
       </TouchableOpacity>
 
 {/* MOTOR */}
@@ -190,7 +291,17 @@ const WaterLevel = () => {
                     button
                     style={{ marginTop: theme.sizes.base * 0.5, color:'black', fontWeight:'bold' }}
                   >
-                    Motor
+                    {selectedLang == 0
+          ? translation[56].English
+          : selectedLang == 1
+          ? translation[56].Telugu
+          : selectedLang == 2
+          ? translation[56].Hindi
+          : selectedLang == 3
+          ? translation[56].Punjabi
+          : selectedLang == 4
+          ? translation[56].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>

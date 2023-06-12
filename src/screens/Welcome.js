@@ -77,7 +77,7 @@ const Welcome = ({ navigation, illustrations }) => {
         {selectedLang == 0
           ? translation[0].English
           : selectedLang == 1
-          ? translation[0].Tamil
+          ? translation[0].Telugu
           : selectedLang == 2
           ? translation[0].Hindi
           : selectedLang == 3
@@ -88,7 +88,7 @@ const Welcome = ({ navigation, illustrations }) => {
           <Text style={styles.headerTextBold}> {selectedLang == 0
           ? translation[1].English
           : selectedLang == 1
-          ? translation[1].Tamil
+          ? translation[1].Telugu
           : selectedLang == 2
           ? translation[1].Hindi
           : selectedLang == 3
@@ -100,7 +100,7 @@ const Welcome = ({ navigation, illustrations }) => {
         <Text style={styles.subHeaderText}>{selectedLang == 0
           ? translation[2].English
           : selectedLang == 1
-          ? translation[2].Tamil
+          ? translation[2].Telugu
           : selectedLang == 2
           ? translation[2].Hindi
           : selectedLang == 3
@@ -119,7 +119,7 @@ const Welcome = ({ navigation, illustrations }) => {
             <Text style={styles.buttonText}>{selectedLang == 0
           ? translation[3].English
           : selectedLang == 1
-          ? translation[3].Tamil
+          ? translation[3].Telugu
           : selectedLang == 2
           ? translation[3].Hindi
           : selectedLang == 3
@@ -135,7 +135,7 @@ const Welcome = ({ navigation, illustrations }) => {
                 }}>{selectedLang == 0
                   ? translation[4].English
                   : selectedLang == 1
-                  ? translation[4].Tamil
+                  ? translation[4].Telugu
                   : selectedLang == 2
                   ? translation[4].Hindi
                   : selectedLang == 3
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: theme.colors.black,
     fontSize: theme.fonts.h1,
+    paddingBottom:5
   },
   headerTextBold: {
     color: theme.colors.primary,
@@ -219,6 +220,7 @@ const styles = StyleSheet.create({
   subHeaderText: {
     color: theme.colors.gray,
     fontSize: theme.fonts.h2,
+    paddingBottom:5
   },
   illustrations: {
     flex: 6,
