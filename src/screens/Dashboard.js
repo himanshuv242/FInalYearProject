@@ -8,9 +8,21 @@ import SoundPlayer from 'react-native-sound-player';
 import { fetchWeatherForecast } from '../../api/weather';
 import { getData} from '../../utils/asyncStorage';
 import PushNotification from 'react-native-push-notification';
+import {translation} from '../utils';
  
 
 const Dashboard = ({ navigation }) => {
+
+  const [selectedLang, setSelectedLang] = useState(0);
+
+  useEffect(()=>{
+    getLang();
+  },[])
+
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
+
   const LightIcon = () => (
     <Image
       source={require('../assets/icons/bulb.png')}
@@ -71,6 +83,7 @@ const [isPlaying, setIsPlaying] = useState(false);
       console.log(data);
       setWeather(data);
     });
+
   };
   useEffect(() => {
     fetchMyWeatherData();
@@ -122,7 +135,27 @@ const [isPlaying, setIsPlaying] = useState(false);
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+        Alert.alert(`${selectedLang == 0
+          ? translation[23].English
+          : selectedLang == 1
+          ? translation[23].Telugu
+          : selectedLang == 2
+          ? translation[23].Hindi
+          : selectedLang == 3
+          ? translation[23].Punjabi
+          : selectedLang == 4
+          ? translation[23].Urdu
+          : null}`, `${selectedLang == 0
+            ? translation[24].English
+            : selectedLang == 1
+            ? translation[24].Telugu
+            : selectedLang == 2
+            ? translation[24].Hindi
+            : selectedLang == 3
+            ? translation[24].Punjabi
+            : selectedLang == 4
+            ? translation[24].Urdu
+            : null}`);
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('Motor switched successfully');
@@ -150,7 +183,27 @@ const [isPlaying, setIsPlaying] = useState(false);
       })
       .catch(error => {
         console.log(error);
-        Alert.alert('Unable to connect!', 'Please check your connection to the module.');
+        Alert.alert(`${selectedLang == 0
+          ? translation[23].English
+          : selectedLang == 1
+          ? translation[23].Telugu
+          : selectedLang == 2
+          ? translation[23].Hindi
+          : selectedLang == 3
+          ? translation[23].Punjabi
+          : selectedLang == 4
+          ? translation[23].Urdu
+          : null}`, `${selectedLang == 0
+            ? translation[24].English
+            : selectedLang == 1
+            ? translation[24].Telugu
+            : selectedLang == 2
+            ? translation[24].Hindi
+            : selectedLang == 3
+            ? translation[24].Punjabi
+            : selectedLang == 4
+            ? translation[24].Urdu
+            : null}`);
       });
       // await axios.get('http://192.168.170.177/led');
       console.log('Light switched successfully');
@@ -196,15 +249,55 @@ const [isPlaying, setIsPlaying] = useState(false);
       // Send local notification
       PushNotification.localNotification({
         channelId: 'my-channel-id', // Replace with your desired channel ID
-        title: 'Upcoming Rain',
-        message: 'There is a possibility of rain in the coming week. Please irrigate your farm accordingly.',
+        title: `${selectedLang == 0
+          ? translation[19].English
+          : selectedLang == 1
+          ? translation[19].Telugu
+          : selectedLang == 2
+          ? translation[19].Hindi
+          : selectedLang == 3
+          ? translation[19].Punjabi
+          : selectedLang == 4
+          ? translation[19].Urdu
+          : null}`,
+        message: `${selectedLang == 0
+          ? translation[20].English
+          : selectedLang == 1
+          ? translation[20].Telugu
+          : selectedLang == 2
+          ? translation[20].Hindi
+          : selectedLang == 3
+          ? translation[20].Punjabi
+          : selectedLang == 4
+          ? translation[20].Urdu
+          : null}`,
       });
     }
     else {
       PushNotification.localNotification({
         channelId: 'my-channel-id', // Replace with your desired channel ID
-        title: 'No upcoming rain in the week',
-        message: 'There is a possibility of no rain in the coming week. Please irrigate your farm accordingly.',
+        title: `${selectedLang == 0
+          ? translation[21].English
+          : selectedLang == 1
+          ? translation[21].Telugu
+          : selectedLang == 2
+          ? translation[21].Hindi
+          : selectedLang == 3
+          ? translation[21].Punjabi
+          : selectedLang == 4
+          ? translation[21].Urdu
+          : null}`,
+        message: `${selectedLang == 0
+          ? translation[22].English
+          : selectedLang == 1
+          ? translation[22].Telugu
+          : selectedLang == 2
+          ? translation[22].Hindi
+          : selectedLang == 3
+          ? translation[22].Punjabi
+          : selectedLang == 4
+          ? translation[22].Urdu
+          : null}`,
       });
     }
   };
@@ -235,12 +328,32 @@ const [isPlaying, setIsPlaying] = useState(false);
       <Block style={styles.dashboard}>
          <Block row style={{ marginTop: theme.sizes.base }}>
          <Block column flex={1} >
-          <Text welcome>Hi,</Text>
-          <Text name>Himanshu</Text>
+          <Text welcome style={{alignSelf: 'flex-start', paddingVertical:3}}>{selectedLang == 0
+          ? translation[25].English
+          : selectedLang == 1
+          ? translation[25].Telugu
+          : selectedLang == 2
+          ? translation[25].Hindi
+          : selectedLang == 3
+          ? translation[25].Punjabi
+          : selectedLang == 4
+          ? translation[25].Urdu
+          : null},</Text>
+          <Text name style={{alignSelf: 'flex-start' , paddingVertical:3}}>Himanshu</Text>
         </Block>
 
          <Block  style={{alignItems: 'flex-end' }}>
-           <Text welcome style={{fontSize:15, alignSelf:'center'}}>Audio Tour</Text>
+           <Text welcome style={{fontSize:15, alignSelf:'center',paddingVertical:3}}>{selectedLang == 0
+          ? translation[27].English
+          : selectedLang == 1
+          ? translation[27].Telugu
+          : selectedLang == 2
+          ? translation[27].Hindi
+          : selectedLang == 3
+          ? translation[27].Punjabi
+          : selectedLang == 4
+          ? translation[27].Urdu
+          : null}</Text>
         <Switch
           value={isSwitchOn}
           onValueChange={playSound}
@@ -264,7 +377,17 @@ const [isPlaying, setIsPlaying] = useState(false);
           </Block>
           
           <Block flex={1} column style={{alignItems:'center'}}>
-            <Text caption >Soil Moisture</Text>
+            <Text caption style={{paddingVertical:3}} >{selectedLang == 0
+          ? translation[28].English
+          : selectedLang == 1
+          ? translation[28].Telugu
+          : selectedLang == 2
+          ? translation[28].Hindi
+          : selectedLang == 3
+          ? translation[28].Punjabi
+          : selectedLang == 4
+          ? translation[28].Urdu
+          : null}</Text>
             <Text size={40} height={80} color={'#0AC4BA'}>{moistureLevel}%</Text>
           </Block>
         </Block> 
@@ -280,9 +403,19 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <LightIcon size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                    Light
+                   {selectedLang == 0
+          ? translation[29].English
+          : selectedLang == 1
+          ? translation[29].Telugu
+          : selectedLang == 2
+          ? translation[29].Hindi
+          : selectedLang == 3
+          ? translation[29].Punjabi
+          : selectedLang == 4
+          ? translation[29].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -295,9 +428,19 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <ACIcon size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                    Crop Manual
+                    {selectedLang == 0
+          ? translation[30].English
+          : selectedLang == 1
+          ? translation[30].Telugu
+          : selectedLang == 2
+          ? translation[30].Hindi
+          : selectedLang == 3
+          ? translation[30].Punjabi
+          : selectedLang == 4
+          ? translation[30].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -312,9 +455,19 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <TempIcon size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                   Weather
+                   {selectedLang == 0
+          ? translation[31].English
+          : selectedLang == 1
+          ? translation[31].Telugu
+          : selectedLang == 2
+          ? translation[31].Hindi
+          : selectedLang == 3
+          ? translation[31].Punjabi
+          : selectedLang == 4
+          ? translation[31].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -327,15 +480,25 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <FanIcon size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                    Motor
+                    {selectedLang == 0
+          ? translation[32].English
+          : selectedLang == 1
+          ? translation[32].Telugu
+          : selectedLang == 2
+          ? translation[32].Hindi
+          : selectedLang == 3
+          ? translation[32].Punjabi
+          : selectedLang == 4
+          ? translation[32].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
             </Block>
 
-            <Block row space="around" style={{ marginVertical: theme.sizes.base }}>
+            <Block row space="around" style={{ marginVertical: theme.sizes.base}}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => navigation.navigate('Motor Timer')}
@@ -344,9 +507,19 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <Timer size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                    Motor Timer
+                    {selectedLang == 0
+          ? translation[33].English
+          : selectedLang == 1
+          ? translation[33].Telugu
+          : selectedLang == 2
+          ? translation[33].Hindi
+          : selectedLang == 3
+          ? translation[33].Punjabi
+          : selectedLang == 4
+          ? translation[33].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
@@ -359,9 +532,19 @@ const [isPlaying, setIsPlaying] = useState(false);
                   <ElectricityIcon size={38} />
                   <Text
                     button
-                    style={{ marginTop: theme.sizes.base * 0.5 }}
+                    style={{ marginTop: theme.sizes.base * 0.5,paddingVertical:3 }}
                   >
-                    Power Supply
+                    {selectedLang == 0
+          ? translation[34].English
+          : selectedLang == 1
+          ? translation[34].Telugu
+          : selectedLang == 2
+          ? translation[34].Hindi
+          : selectedLang == 3
+          ? translation[34].Punjabi
+          : selectedLang == 4
+          ? translation[34].Urdu
+          : null}
                   </Text>
                 </Block>
               </TouchableOpacity>
