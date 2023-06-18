@@ -10,37 +10,23 @@ import { debounce } from 'lodash';
 import theme from '../../theme'
 import { fetchLocations, fetchWeatherForecast } from '../../api/weather';
 import PushNotification from 'react-native-push-notification';
+import {translation} from '../utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weather, setWeather] = useState({});
+  const [selectedLang, setSelectedLang] = useState(0);
 
-  const checkRainyWeather = (forecast) => {
-    const rainyDays = forecast.forecastday.filter((day) => {
-      // Adjust the condition according to your weather data
-      return day.day.condition.text.includes('rain');
-    });
-  
-    if (rainyDays.length > 0) {
-      // Send local notification
-      PushNotification.localNotification({
-        channelId: 'my-channel-id', // Replace with your desired channel ID
-        title: 'Upcoming Rain',
-        message: 'Rain in the coming week. Kindly pay attention to level of irrigation.',
-      });
-    }
-    else {
-      PushNotification.localNotification({
-        channelId: 'my-channel-id', // Replace with your desired channel ID
-        title: 'No upcoming rain in the week',
-        message: 'No rain in the coming week. Kindly pay attention to level of irrigation.',
-      });
-    }
-  };
+  useEffect(()=>{
+    getLang();
+  },[])
 
-  
+  const getLang=async()=>{
+    setSelectedLang(parseInt(await AsyncStorage.getItem('LANG')));
+  }
 
   const handleSearch = (search) => {
     if (search && search.length > 2) {
@@ -66,17 +52,78 @@ export default function HomeScreen() {
 
   useEffect(() => {
     fetchMyWeatherData();
-    
   }, []);
 
-  useEffect(() => {
-    // Fetch the weather forecast data and store it in the 'weather' state
-  
-    // Check for rainy weather
-    if (weather.forecast && weather.forecast.forecastday) {
-      checkRainyWeather(weather.forecast);
-    }
-  }, [weather]);
+
+//Check for upcoming rainy day
+const checkRainyWeather = (forecast) => {
+  const rainyDays = forecast.forecastday.filter((day) => {
+    // Adjust the condition according to your weather data
+    return day.day.condition.text.includes('rain');
+  });
+
+  if (rainyDays.length > 0) {
+    // Send local notification
+    PushNotification.localNotification({
+      channelId: 'my-channel-id', // Replace with your desired channel ID
+      title: `${selectedLang == 0
+        ? translation[19].English
+        : selectedLang == 1
+        ? translation[19].Telugu
+        : selectedLang == 2
+        ? translation[19].Hindi
+        : selectedLang == 3
+        ? translation[19].Punjabi
+        : selectedLang == 4
+        ? translation[19].Urdu
+        : null}`,
+      message: `${selectedLang == 0
+        ? translation[20].English
+        : selectedLang == 1
+        ? translation[20].Telugu
+        : selectedLang == 2
+        ? translation[20].Hindi
+        : selectedLang == 3
+        ? translation[20].Punjabi
+        : selectedLang == 4
+        ? translation[20].Urdu
+        : null}`,
+    });
+  }
+  else {
+    PushNotification.localNotification({
+      channelId: 'my-channel-id', // Replace with your desired channel ID
+      title: `${selectedLang == 0
+        ? translation[21].English
+        : selectedLang == 1
+        ? translation[21].Telugu
+        : selectedLang == 2
+        ? translation[21].Hindi
+        : selectedLang == 3
+        ? translation[21].Punjabi
+        : selectedLang == 4
+        ? translation[21].Urdu
+        : null}`,
+      message: `${selectedLang == 0
+        ? translation[22].English
+        : selectedLang == 1
+        ? translation[22].Telugu
+        : selectedLang == 2
+        ? translation[22].Hindi
+        : selectedLang == 3
+        ? translation[22].Punjabi
+        : selectedLang == 4
+        ? translation[22].Urdu
+        : null}`,
+    });
+  }
+};
+ // Check for rainy weather
+useEffect(() => {
+  if (weather.forecast && weather.forecast.forecastday) {
+    checkRainyWeather(weather.forecast);
+  }
+}, [weather]);
 
   const fetchMyWeatherData = async () => {
     let myCity = await getData('city');

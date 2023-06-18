@@ -23,12 +23,12 @@ const PowerSupplyScreen = () => {
       const savedIPAddress = await AsyncStorage.getItem('ipAddress');
       // console.log(`IP address is ${savedIPAddress}`);
       
-      await axios.get(`http://${savedIPAddress}/light`).then(response => {
+      await axios.get(`http://${savedIPAddress}/supply`).then(response => {
         // console.log(response.data);
         const stringifiedData = JSON.stringify(response.data);
-        if (stringifiedData === '"Light ON"') {
+        if (stringifiedData === '"ON"') {
             setIsSolarSupply(true);
-        } else if (stringifiedData === '"Light OFF"') {
+        } else if (stringifiedData === '"OFF"') {
             setIsSolarSupply(false);
         }
       })
@@ -231,17 +231,7 @@ const PowerSupplyScreen = () => {
             ? translation[42].Urdu
             : null}</Text>
           <Text style={styles.detailValue}>
-            {isSolarSupply ? `:${selectedLang == 0
-            ? translation[47].English
-            : selectedLang == 1
-            ? translation[47].Telugu
-            : selectedLang == 2
-            ? translation[47].Hindi
-            : selectedLang == 3
-            ? translation[47].Punjabi
-            : selectedLang == 4
-            ? translation[47].Urdu
-            : null}` : ': Continuous'}
+            {isSolarSupply ? ': Continuous' : ': Continuous'}
           </Text>
         </View>
         <View style={styles.detailItem}>
